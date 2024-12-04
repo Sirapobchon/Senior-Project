@@ -10,7 +10,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-void main(void) {
+void blink(void) {
     DDRB |= (1 << DDB1);
     
     while (1) {
