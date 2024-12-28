@@ -201,6 +201,8 @@
         <property key="wpo-lto" value="false"/>
         <appendMe value="-I./FreeRTOS -I./FreeRTOS/include -I./FreeRTOS/portable/GCC/ATMega328 "/>
       </XC8-config-global>
+      <item path="showfn.c" ex="true" overriding="false">
+      </item>
     </conf>
   </confs>
 </configurationDescriptor>
