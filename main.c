@@ -31,13 +31,13 @@ char vUARTReceive(void);
 // TODO: Research moving vLEDFlashTask method to apptasks.c
 void vLEDFlashTask(void *pvParms)
 {
-	vLEDInit();
+	vBlinkInit();
 	portTickType xLastWakeTime;
 	const portTickType xFrequency = 100;
 	xLastWakeTime = xTaskGetTickCount();
 
 	for(;;) {
-		vLEDToggle();
+		vBlinkToggle();
 		vTaskDelayUntil(&xLastWakeTime, xFrequency);
 	}
 }
@@ -56,7 +56,7 @@ void vUARTTask(void *pvParameters)
         vUARTTransmit(receivedData);
 
         // Optional: Toggle LED for each received byte
-        vLEDToggle();
+        vUARTMorseLED(receivedData);
     }
 }
 
@@ -83,19 +83,30 @@ void vApplicationIdleHook( void )
 	//vCoRoutineSchedule();
 }
 
-void vLEDInit(void)
+void vBlinkInit(void)
 {
     DDRB |= _BV(PB1); // Configure PB1 as output
 }
 
-void vLEDToggle(void)
+void vBlinkToggle(void)
 {
     PORTB ^= _BV(PB1); // Toggle PB1
+}
+
+void vUARTMorseLED(char data)
+{   
+    Output = data
+    PORTB ^= _BV(PB2); // Toggle PB2
+    portTickType xLastWakeTime;
+    const portTickType xFrequency = 100;
+	xLastWakeTime = xTaskGetTickCount();
+    vTaskDelayUntil(&xLastWakeTime, xFrequency);
 }
 
 // UART Initialization
 void vUARTInit(void)
 {
+    DDRB |= _BV(PB2); // Configure PB2 as output
     UBRR0H = 0;     // Set baud rate to 9600 (for 8 MHz clock)
     UBRR0L = 51;    // Baud rate for 9600 at 8 MHz
     UCSR0B = (1 << RXEN0) | (1 << TXEN0);  // Enable RX and TX
