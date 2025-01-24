@@ -21,7 +21,8 @@ build/default/production/main.o.d build/default/production/main.o: main.c \
  FreeRTOS/include/list.h apptasks.h \
  c:\program\ files\microchip\xc8\v2.50\avr\lib\gcc\avr\5.4.0\include\xc.h \
  c:\program\ files\microchip\xc8\v2.50\avr\lib\gcc\avr\5.4.0\include\cci.h \
- c:\program\ files\microchip\xc8\v2.50\avr\avr\include\avr\builtins.h
+ c:\program\ files\microchip\xc8\v2.50\avr\avr\include\avr\builtins.h \
+ c:\program\ files\microchip\xc8\v2.50\avr\avr\include\string.h
 
 c:\program\ files\microchip\xc8\v2.50\avr\avr\include\avr\io.h:
 
@@ -76,3 +77,5 @@ c:\program\ files\microchip\xc8\v2.50\avr\lib\gcc\avr\5.4.0\include\xc.h:
 c:\program\ files\microchip\xc8\v2.50\avr\lib\gcc\avr\5.4.0\include\cci.h:
 
 c:\program\ files\microchip\xc8\v2.50\avr\avr\include\avr\builtins.h:
+
+c:\program\ files\microchip\xc8\v2.50\avr\avr\include\string.h:
