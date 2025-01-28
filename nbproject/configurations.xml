@@ -48,7 +48,8 @@
       <itemPath>FreeRTOS/timers.c</itemPath>
       <itemPath>FreeRTOS/portable/GCC/ATMega328/port.c</itemPath>
       <itemPath>FreeRTOS/portable/MemMang/heap_1.c</itemPath>
-      <itemPath>showfn.c</itemPath>
+      <itemPath>morsetask.c</itemPath>
+      <itemPath>morsetask.h</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
@@ -201,8 +202,6 @@
         <property key="wpo-lto" value="false"/>
         <appendMe value="-I./FreeRTOS -I./FreeRTOS/include -I./FreeRTOS/portable/GCC/ATMega328 "/>
       </XC8-config-global>
-      <item path="showfn.c" ex="true" overriding="false">
-      </item>
     </conf>
   </confs>
 </configurationDescriptor>
