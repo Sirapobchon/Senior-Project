@@ -12,14 +12,14 @@ build/default/production/main.o.d build/default/production/main.o: main.c \
  c:\program\ files\microchip\xc8\v2.50\avr\avr\include\avr\common.h \
  c:\program\ files\microchip\xc8\v2.50\avr\avr\include\avr\fuse.h \
  c:\program\ files\microchip\xc8\v2.50\avr\avr\include\avr\lock.h \
- FreeRTOS/include/FreeRTOS.h \
+ c:\program\ files\microchip\xc8\v2.50\avr\avr\include\avr\eeprom.h \
  c:\program\ files\microchip\xc8\v2.50\avr\lib\gcc\avr\5.4.0\include\stddef.h \
- FreeRTOS/FreeRTOSConfig.h FreeRTOS/include/projdefs.h \
- FreeRTOS/include/portable.h FreeRTOS/include/deprecated_definitions.h \
+ FreeRTOS/include/FreeRTOS.h FreeRTOS/FreeRTOSConfig.h \
+ FreeRTOS/include/projdefs.h FreeRTOS/include/portable.h \
+ FreeRTOS/include/deprecated_definitions.h \
  FreeRTOS/include/../portable/GCC/ATMega328/portmacro.h \
  FreeRTOS/include/mpu_wrappers.h FreeRTOS/include/task.h \
  FreeRTOS/include/list.h FreeRTOS/include/queue.h FreeRTOS/include/task.h \
- morsetask.h \
  c:\program\ files\microchip\xc8\v2.50\avr\lib\gcc\avr\5.4.0\include\xc.h \
  c:\program\ files\microchip\xc8\v2.50\avr\lib\gcc\avr\5.4.0\include\cci.h \
  c:\program\ files\microchip\xc8\v2.50\avr\avr\include\avr\builtins.h \
@@ -54,9 +54,11 @@ c:\program\ files\microchip\xc8\v2.50\avr\avr\include\avr\fuse.h:
 
 c:\program\ files\microchip\xc8\v2.50\avr\avr\include\avr\lock.h:
 
-FreeRTOS/include/FreeRTOS.h:
+c:\program\ files\microchip\xc8\v2.50\avr\avr\include\avr\eeprom.h:
 
 c:\program\ files\microchip\xc8\v2.50\avr\lib\gcc\avr\5.4.0\include\stddef.h:
+
+FreeRTOS/include/FreeRTOS.h:
 
 FreeRTOS/FreeRTOSConfig.h:
 
@@ -77,8 +79,6 @@ FreeRTOS/include/list.h:
 FreeRTOS/include/queue.h:
 
 FreeRTOS/include/task.h:
-
-morsetask.h:
 
 c:\program\ files\microchip\xc8\v2.50\avr\lib\gcc\avr\5.4.0\include\xc.h:
 

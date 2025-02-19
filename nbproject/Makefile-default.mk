@@ -51,17 +51,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=main.c FreeRTOS/croutine.c FreeRTOS/event_groups.c FreeRTOS/list.c FreeRTOS/queue.c FreeRTOS/tasks.c FreeRTOS/timers.c FreeRTOS/portable/GCC/ATMega328/port.c FreeRTOS/portable/MemMang/heap_1.c
+SOURCEFILES_QUOTED_IF_SPACED=main.c FreeRTOS/croutine.c FreeRTOS/event_groups.c FreeRTOS/list.c FreeRTOS/queue.c FreeRTOS/tasks.c FreeRTOS/timers.c FreeRTOS/portable/GCC/ATMega328/port.c FreeRTOS/portable/MemMang/heap_4.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/main.o ${OBJECTDIR}/FreeRTOS/croutine.o ${OBJECTDIR}/FreeRTOS/event_groups.o ${OBJECTDIR}/FreeRTOS/list.o ${OBJECTDIR}/FreeRTOS/queue.o ${OBJECTDIR}/FreeRTOS/tasks.o ${OBJECTDIR}/FreeRTOS/timers.o ${OBJECTDIR}/FreeRTOS/portable/GCC/ATMega328/port.o ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_1.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/main.o.d ${OBJECTDIR}/FreeRTOS/croutine.o.d ${OBJECTDIR}/FreeRTOS/event_groups.o.d ${OBJECTDIR}/FreeRTOS/list.o.d ${OBJECTDIR}/FreeRTOS/queue.o.d ${OBJECTDIR}/FreeRTOS/tasks.o.d ${OBJECTDIR}/FreeRTOS/timers.o.d ${OBJECTDIR}/FreeRTOS/portable/GCC/ATMega328/port.o.d ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_1.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/main.o ${OBJECTDIR}/FreeRTOS/croutine.o ${OBJECTDIR}/FreeRTOS/event_groups.o ${OBJECTDIR}/FreeRTOS/list.o ${OBJECTDIR}/FreeRTOS/queue.o ${OBJECTDIR}/FreeRTOS/tasks.o ${OBJECTDIR}/FreeRTOS/timers.o ${OBJECTDIR}/FreeRTOS/portable/GCC/ATMega328/port.o ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/main.o.d ${OBJECTDIR}/FreeRTOS/croutine.o.d ${OBJECTDIR}/FreeRTOS/event_groups.o.d ${OBJECTDIR}/FreeRTOS/list.o.d ${OBJECTDIR}/FreeRTOS/queue.o.d ${OBJECTDIR}/FreeRTOS/tasks.o.d ${OBJECTDIR}/FreeRTOS/timers.o.d ${OBJECTDIR}/FreeRTOS/portable/GCC/ATMega328/port.o.d ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/main.o ${OBJECTDIR}/FreeRTOS/croutine.o ${OBJECTDIR}/FreeRTOS/event_groups.o ${OBJECTDIR}/FreeRTOS/list.o ${OBJECTDIR}/FreeRTOS/queue.o ${OBJECTDIR}/FreeRTOS/tasks.o ${OBJECTDIR}/FreeRTOS/timers.o ${OBJECTDIR}/FreeRTOS/portable/GCC/ATMega328/port.o ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_1.o
+OBJECTFILES=${OBJECTDIR}/main.o ${OBJECTDIR}/FreeRTOS/croutine.o ${OBJECTDIR}/FreeRTOS/event_groups.o ${OBJECTDIR}/FreeRTOS/list.o ${OBJECTDIR}/FreeRTOS/queue.o ${OBJECTDIR}/FreeRTOS/tasks.o ${OBJECTDIR}/FreeRTOS/timers.o ${OBJECTDIR}/FreeRTOS/portable/GCC/ATMega328/port.o ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o
 
 # Source Files
-SOURCEFILES=main.c FreeRTOS/croutine.c FreeRTOS/event_groups.c FreeRTOS/list.c FreeRTOS/queue.c FreeRTOS/tasks.c FreeRTOS/timers.c FreeRTOS/portable/GCC/ATMega328/port.c FreeRTOS/portable/MemMang/heap_1.c
+SOURCEFILES=main.c FreeRTOS/croutine.c FreeRTOS/event_groups.c FreeRTOS/list.c FreeRTOS/queue.c FreeRTOS/tasks.c FreeRTOS/timers.c FreeRTOS/portable/GCC/ATMega328/port.c FreeRTOS/portable/MemMang/heap_4.c
 
 
 
@@ -156,11 +156,11 @@ ${OBJECTDIR}/FreeRTOS/portable/GCC/ATMega328/port.o: FreeRTOS/portable/GCC/ATMeg
 	@${RM} ${OBJECTDIR}/FreeRTOS/portable/GCC/ATMega328/port.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1 -g -DDEBUG  -gdwarf-2  -x c -D__$(MP_PROCESSOR_OPTION)__   -mdfp="${DFP_DIR}/xc8"  -Wl,--gc-sections -O1 -ffunction-sections -fdata-sections -fshort-enums -fno-common -funsigned-char -funsigned-bitfields -Wall -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD)  -gdwarf-3 -mno-const-data-in-progmem -I./FreeRTOS -I./FreeRTOS/include -I./FreeRTOS/portable/GCC/ATMega328      -MD -MP -MF "${OBJECTDIR}/FreeRTOS/portable/GCC/ATMega328/port.o.d" -MT "${OBJECTDIR}/FreeRTOS/portable/GCC/ATMega328/port.o.d" -MT ${OBJECTDIR}/FreeRTOS/portable/GCC/ATMega328/port.o -o ${OBJECTDIR}/FreeRTOS/portable/GCC/ATMega328/port.o FreeRTOS/portable/GCC/ATMega328/port.c 
 	
-${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_1.o: FreeRTOS/portable/MemMang/heap_1.c  .generated_files/flags/default/1c91b1681280dfff0132e55fa084ea006145922 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o: FreeRTOS/portable/MemMang/heap_4.c  .generated_files/flags/default/172f22b4c801c676b836494f255ba38bd001077 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/FreeRTOS/portable/MemMang" 
-	@${RM} ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_1.o.d 
-	@${RM} ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_1.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1 -g -DDEBUG  -gdwarf-2  -x c -D__$(MP_PROCESSOR_OPTION)__   -mdfp="${DFP_DIR}/xc8"  -Wl,--gc-sections -O1 -ffunction-sections -fdata-sections -fshort-enums -fno-common -funsigned-char -funsigned-bitfields -Wall -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD)  -gdwarf-3 -mno-const-data-in-progmem -I./FreeRTOS -I./FreeRTOS/include -I./FreeRTOS/portable/GCC/ATMega328      -MD -MP -MF "${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_1.o.d" -MT "${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_1.o.d" -MT ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_1.o -o ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_1.o FreeRTOS/portable/MemMang/heap_1.c 
+	@${RM} ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o.d 
+	@${RM} ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1 -g -DDEBUG  -gdwarf-2  -x c -D__$(MP_PROCESSOR_OPTION)__   -mdfp="${DFP_DIR}/xc8"  -Wl,--gc-sections -O1 -ffunction-sections -fdata-sections -fshort-enums -fno-common -funsigned-char -funsigned-bitfields -Wall -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD)  -gdwarf-3 -mno-const-data-in-progmem -I./FreeRTOS -I./FreeRTOS/include -I./FreeRTOS/portable/GCC/ATMega328      -MD -MP -MF "${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o.d" -MT "${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o.d" -MT ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o -o ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o FreeRTOS/portable/MemMang/heap_4.c 
 	
 else
 ${OBJECTDIR}/main.o: main.c  .generated_files/flags/default/90db4d5bc1b07e01b3c9d3b98d5fd5934b239052 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
@@ -211,11 +211,11 @@ ${OBJECTDIR}/FreeRTOS/portable/GCC/ATMega328/port.o: FreeRTOS/portable/GCC/ATMeg
 	@${RM} ${OBJECTDIR}/FreeRTOS/portable/GCC/ATMega328/port.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -x c -D__$(MP_PROCESSOR_OPTION)__   -mdfp="${DFP_DIR}/xc8"  -Wl,--gc-sections -O1 -ffunction-sections -fdata-sections -fshort-enums -fno-common -funsigned-char -funsigned-bitfields -Wall -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD)  -gdwarf-3 -mno-const-data-in-progmem -I./FreeRTOS -I./FreeRTOS/include -I./FreeRTOS/portable/GCC/ATMega328      -MD -MP -MF "${OBJECTDIR}/FreeRTOS/portable/GCC/ATMega328/port.o.d" -MT "${OBJECTDIR}/FreeRTOS/portable/GCC/ATMega328/port.o.d" -MT ${OBJECTDIR}/FreeRTOS/portable/GCC/ATMega328/port.o -o ${OBJECTDIR}/FreeRTOS/portable/GCC/ATMega328/port.o FreeRTOS/portable/GCC/ATMega328/port.c 
 	
-${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_1.o: FreeRTOS/portable/MemMang/heap_1.c  .generated_files/flags/default/92c93c37ab9c6e225c5c5f02e522524f9578d887 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o: FreeRTOS/portable/MemMang/heap_4.c  .generated_files/flags/default/74c5cfde9378692edac09d4c23fffd39b5351c3c .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/FreeRTOS/portable/MemMang" 
-	@${RM} ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_1.o.d 
-	@${RM} ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_1.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -x c -D__$(MP_PROCESSOR_OPTION)__   -mdfp="${DFP_DIR}/xc8"  -Wl,--gc-sections -O1 -ffunction-sections -fdata-sections -fshort-enums -fno-common -funsigned-char -funsigned-bitfields -Wall -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD)  -gdwarf-3 -mno-const-data-in-progmem -I./FreeRTOS -I./FreeRTOS/include -I./FreeRTOS/portable/GCC/ATMega328      -MD -MP -MF "${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_1.o.d" -MT "${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_1.o.d" -MT ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_1.o -o ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_1.o FreeRTOS/portable/MemMang/heap_1.c 
+	@${RM} ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o.d 
+	@${RM} ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -x c -D__$(MP_PROCESSOR_OPTION)__   -mdfp="${DFP_DIR}/xc8"  -Wl,--gc-sections -O1 -ffunction-sections -fdata-sections -fshort-enums -fno-common -funsigned-char -funsigned-bitfields -Wall -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD)  -gdwarf-3 -mno-const-data-in-progmem -I./FreeRTOS -I./FreeRTOS/include -I./FreeRTOS/portable/GCC/ATMega328      -MD -MP -MF "${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o.d" -MT "${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o.d" -MT ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o -o ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o FreeRTOS/portable/MemMang/heap_4.c 
 	
 endif
 
