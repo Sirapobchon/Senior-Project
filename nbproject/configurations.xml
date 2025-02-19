@@ -48,8 +48,6 @@
       <itemPath>FreeRTOS/timers.c</itemPath>
       <itemPath>FreeRTOS/portable/GCC/ATMega328/port.c</itemPath>
       <itemPath>FreeRTOS/portable/MemMang/heap_1.c</itemPath>
-      <itemPath>morsetask.c</itemPath>
-      <itemPath>morsetask.h</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
