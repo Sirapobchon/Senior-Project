@@ -95,7 +95,9 @@ void uart_transmit_string(const char *str) {
 
 void uart_transmit_hex(uint8_t value) {
     char hex[3];
-    snprintf(hex, sizeof(hex), "%02X", value);  // Convert byte to hex
+    hex[0] = "0123456789ABCDEF"[value >> 4];  // Extract high nibble
+    hex[1] = "0123456789ABCDEF"[value & 0x0F]; // Extract low nibble
+    hex[2] = '\0';  // Null terminator
     uart_transmit_string(hex);
 }
 
@@ -137,7 +139,6 @@ void delete_task_eeprom(uint8_t taskID) {
     if (task.taskID == 0xFF) {
         uart_transmit_string("No Task ID: ");
         uart_transmit_hex(taskID);
-        uart_transmit('\n');
         return;
     }
 
@@ -151,7 +152,6 @@ void delete_task_eeprom(uint8_t taskID) {
 
     uart_transmit_string("Task Deleted ID: ");
     uart_transmit_hex(taskID);
-    uart_transmit('\n');
 }
 
 
@@ -205,6 +205,7 @@ void receive_task_data(char *buffer, int max_length) {
     uart_transmit('X');  // Debug: Buffer Overflow (Should Not Happen)
 }
 
+#define TASK_STORAGE_SIZE 256  // Fixed storage size per task
 
 void store_task_eeprom(struct TaskHeader *header, uint8_t *binaryData) {
     uint16_t addr = header->taskID * (sizeof(struct TaskHeader) + header->binarySize);
@@ -219,27 +220,78 @@ void store_task_eeprom(struct TaskHeader *header, uint8_t *binaryData) {
     eeprom_update_block((const void *)header, (void *)addr, sizeof(struct TaskHeader));
     eeprom_update_block((const void *)binaryData, (void *)(addr + sizeof(struct TaskHeader)), header->binarySize);
 
-    uart_transmit_string(" Stored Task ID: ");
-    uart_transmit_hex(header->taskID);
-    uart_transmit('\n');
-}
+    // **Verify EEPROM**
+    struct TaskHeader verifyTask;
+    eeprom_read_block((void *)&verifyTask, (const void *)addr, sizeof(struct TaskHeader));
 
+    uart_transmit_string("EEPROM Write Check - ID: ");
+    uart_transmit_hex(verifyTask.taskID);
+    uart_transmit_string(", Type: ");
+    uart_transmit_hex(verifyTask.taskType);
+    uart_transmit_string(", Priority: ");
+    uart_transmit_hex(verifyTask.taskPriority);
+    uart_transmit_string(", Size: ");
+    uart_transmit_hex(verifyTask.binarySize);
+    uart_transmit('\n');
+
+    if (verifyTask.taskID == header->taskID) {
+        uart_transmit_string("Task Stored Successfully\n");
+    } else {
+        uart_transmit_string("Task Store Error!\n");
+    }
+}
 
 // ---------------- Task Loading & Execution ----------------
 
 void load_tasks_from_eeprom() {
     struct TaskHeader task;
-    
-    for (uint8_t i = 0; i < 10; i++) { // Assume max 10 tasks
-        uint16_t addr = i * (sizeof(struct TaskHeader) + 256);
+    uint8_t found = 0;  // Track if any task is found
+
+    for (uint8_t i = 0; i < 10; i++) {
+        uint16_t addr = i * TASK_STORAGE_SIZE;
         eeprom_read_block((void *)&task, (const void *)addr, sizeof(struct TaskHeader));
 
-        if (task.taskID != 0xFF) { // If task exists
-            uart_transmit('L'); // Debug: Task Loaded
-            uart_transmit(task.taskID);
-            
-            // Create a new task in FreeRTOS to execute this binary
+        if (task.taskID != 0xFF) {  // If task exists
+            found = 1;
+            uart_transmit_string("Loaded Task ID: ");
+            uart_transmit_hex(task.taskID);
+            uart_transmit('\n');
+
+            // Create a new task in FreeRTOS
             xTaskCreate(vTaskExecution, "TaskExec", 128, (void *)&task, task.taskPriority, NULL);
+        }
+    }
+
+    if (!found) {
+        uart_transmit_string("No stored tasks found.\n");
+    }
+}
+
+void debug_eeprom_tasks() {
+    struct TaskHeader task;
+
+    uart_transmit_string("EEPROM Debug:");
+
+    for (uint8_t i = 0; i < 10; i++) {
+        uint16_t addr = i * (sizeof(struct TaskHeader) + 256);
+        eeprom_read_block((void *)&task, (const void *)addr, sizeof(struct TaskHeader));
+        
+        uart_transmit('\n');
+        uart_transmit_string("Slot ");
+        uart_transmit_hex(i);
+        uart_transmit_string(": ");
+
+        if (task.taskID == 0xFF) {
+            uart_transmit_string("Empty");
+        } else {
+            uart_transmit_string("Task ID: ");
+            uart_transmit_hex(task.taskID);
+            uart_transmit_string(" Type: ");
+            uart_transmit_hex(task.taskType);
+            uart_transmit_string(" Priority: ");
+            uart_transmit_hex(task.taskPriority);
+            uart_transmit_string(" Size: ");
+            uart_transmit_hex(task.binarySize);
         }
     }
 }
@@ -251,39 +303,62 @@ void vTaskReceive(void *pvParameters) {
         char buffer[32];  
         receive_task_data(buffer, sizeof(buffer));
 
-        if (buffer[0] != '\0') { // Ensure buffer is not empty
+        uart_transmit_string("Received: ");
+        for (uint8_t i = 0; i < strlen(buffer); i++) {
+            uart_transmit_hex(buffer[i]);  // Print in HEX format
+            uart_transmit(' ');
+        }
+        uart_transmit('\n');
+
+        if (buffer[0] != '\0') {
             if (strcmp(buffer, "LIST") == 0) {
                 list_running_tasks();
-            } else if (strcmp(buffer, "DELETE") == 0) {  // Delete All Tasks
+            } else if (strcmp(buffer, "DELETE") == 0) {
                 delete_all_tasks();
             } else if (strncmp(buffer, "DELETE:", 7) == 0) {
-                uint8_t taskID = buffer[7] - '0'; // Extract task ID
+                uint8_t taskID = buffer[7] - '0';
                 delete_task_eeprom(taskID);
+            } else if (strcmp(buffer, "DEBUG") == 0) {
+                debug_eeprom_tasks();
             } else if (strncmp(buffer, "TASK:", 5) == 0) {
-                // Handle task creation normally
+                uart_transmit_string("\nTask Command Detected\n");
+
                 struct TaskHeader newTask;
                 newTask.taskID = buffer[5];
-                uart_transmit_string(" Task ID: ");
-                uart_transmit_hex(newTask.taskID);
                 newTask.taskType = buffer[6];
                 newTask.taskPriority = buffer[7];
+
                 union {
                     uint16_t size;
                     uint8_t bytes[2];
                 } sizeConverter;
+
                 sizeConverter.bytes[0] = buffer[9];
                 sizeConverter.bytes[1] = buffer[8];
+
                 newTask.binarySize = sizeConverter.size;
+
+                uart_transmit_string("Parsed Task - ID: ");
+                uart_transmit_hex(newTask.taskID);
+                uart_transmit_string(", Type: ");
+                uart_transmit_hex(newTask.taskType);
+                uart_transmit_string(", Priority: ");
+                uart_transmit_hex(newTask.taskPriority);
+                uart_transmit_string(", Size: ");
+                uart_transmit_hex(newTask.binarySize);
+                uart_transmit('\n');
+
                 store_task_eeprom(&newTask, (uint8_t *)(buffer + 10));
-                uart_transmit_string("Task Stored\n");
+                uart_transmit_string("Task Stored");
             } else {
-                uart_transmit_string("Unknown Command\n");
+                uart_transmit_string("Unknown Command");
             }
         }
+        else{
+            uart_transmit_string("Unknown Command");
+        }
     }
-    
 }
-
 
 void vTaskExecution(void *pvParameters) {
     struct TaskHeader *task = (struct TaskHeader *)pvParameters;
