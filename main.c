@@ -106,25 +106,29 @@ void uart_transmit_hex(uint8_t value) {
 void list_running_tasks() {
     struct TaskHeader task;
     uint8_t task_found = 0; // Flag to check if any task exists
+    
+    uart_transmit_string("List of Tasks: ");
 
     for (uint8_t i = 0; i < 10; i++) {
         uint16_t addr = i * (sizeof(struct TaskHeader) + 256);
         eeprom_read_block((void *)&task, (const void *)addr, sizeof(struct TaskHeader));
 
         if (task.taskID != 0xFF) {  // If valid task exists
-            uart_transmit_string("T ID:");
+            uart_transmit_string("\nSlot ");
+            uart_transmit_hex(i);
+            uart_transmit_string(": ");
+            uart_transmit_string("T ID: ");
             uart_transmit_hex(task.taskID);
-            uart_transmit_string(" Priority:");
+            uart_transmit_string(" | Priority: ");
             uart_transmit_hex(task.taskPriority);
-            uart_transmit_string(" Type:");
+            uart_transmit_string(" | Type: ");
             uart_transmit_hex(task.taskType);
-            uart_transmit('\n');  // Newline for better readability
             task_found = 1;
         }
     }
 
     if (!task_found) {
-        uart_transmit_string("No tasks");
+        uart_transmit_string("\nNo stored tasks found.");
     }
 }
 
@@ -202,7 +206,7 @@ void receive_task_data(char *buffer, int max_length) {
     }
 
     buffer[index] = '\0'; // Null-terminate in case of overflow
-    uart_transmit('X');  // Debug: Buffer Overflow (Should Not Happen)
+    uart_transmit_string("Buffer Overflow\n");  // Debug: Buffer Overflow (Should Not Happen)
 }
 
 #define TASK_STORAGE_SIZE 256  // Fixed storage size per task
@@ -310,7 +314,7 @@ void vTaskReceive(void *pvParameters) {
         }
         uart_transmit('\n');
 
-        if (buffer[0] != '\0') {
+        if (buffer[0] != '\0') { // Ensure buffer is not empty
             if (strcmp(buffer, "LIST") == 0) {
                 list_running_tasks();
             } else if (strcmp(buffer, "DELETE") == 0) {
@@ -321,21 +325,25 @@ void vTaskReceive(void *pvParameters) {
             } else if (strcmp(buffer, "DEBUG") == 0) {
                 debug_eeprom_tasks();
             } else if (strncmp(buffer, "TASK:", 5) == 0) {
-                uart_transmit_string("\nTask Command Detected\n");
+                uart_transmit_string("Task Command Detected\n");
+
+                if (strlen(buffer) < 10) {
+                    uart_transmit_string("Error: Task Data Too Short!");
+                    return;
+                }
 
                 struct TaskHeader newTask;
-                newTask.taskID = buffer[5];
-                newTask.taskType = buffer[6];
-                newTask.taskPriority = buffer[7];
+                newTask.taskID = buffer[5];  // Byte 1: Task ID
+                newTask.taskType = buffer[6]; // Byte 2: Task Type
+                newTask.taskPriority = buffer[7]; // Byte 3: Priority
 
+                // Extract Binary Size (16-bit value, little endian)
                 union {
                     uint16_t size;
                     uint8_t bytes[2];
                 } sizeConverter;
-
-                sizeConverter.bytes[0] = buffer[9];
-                sizeConverter.bytes[1] = buffer[8];
-
+                sizeConverter.bytes[0] = buffer[8];  // Low byte
+                sizeConverter.bytes[1] = buffer[9];  // High byte
                 newTask.binarySize = sizeConverter.size;
 
                 uart_transmit_string("Parsed Task - ID: ");
@@ -348,8 +356,29 @@ void vTaskReceive(void *pvParameters) {
                 uart_transmit_hex(newTask.binarySize);
                 uart_transmit('\n');
 
+                // Store in EEPROM
                 store_task_eeprom(&newTask, (uint8_t *)(buffer + 10));
-                uart_transmit_string("Task Stored");
+
+                // Verify EEPROM Write
+                struct TaskHeader checkTask;
+                uint16_t addr = newTask.taskID * (sizeof(struct TaskHeader) + newTask.binarySize);
+                eeprom_read_block((void *)&checkTask, (const void *)addr, sizeof(struct TaskHeader));
+
+                uart_transmit_string("EEPROM Write Check - ID: ");
+                uart_transmit_hex(checkTask.taskID);
+                uart_transmit_string(", Type: ");
+                uart_transmit_hex(checkTask.taskType);
+                uart_transmit_string(", Priority: ");
+                uart_transmit_hex(checkTask.taskPriority);
+                uart_transmit_string(", Size: ");
+                uart_transmit_hex(checkTask.binarySize);
+                uart_transmit('\n');
+
+                if (checkTask.taskID != newTask.taskID) {
+                    uart_transmit_string("Task Store Error!\n");
+                } else {
+                    uart_transmit_string("Task Stored\n");
+                }
             } else {
                 uart_transmit_string("Unknown Command");
             }
