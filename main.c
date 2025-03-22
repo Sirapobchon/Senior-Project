@@ -26,11 +26,11 @@
 #define UBRR 51   // Define UBRR Value
 
 struct TaskHeader {
-    uint8_t taskID;
-    uint8_t taskType;
-    uint8_t taskPriority;
-    uint16_t binarySize;
-    // uint32_t flashAddress;
+    uint8_t taskID;        // Unique task identifier
+    uint8_t taskType;      // Defines task behavior (GPIO, PWM, etc.)
+    uint8_t taskPriority;  // Defines execution priority
+    uint16_t binarySize;   // Size of the task binary stored
+    //uint32_t flashAddress;
 };
 
 // Task function prototypes
