@@ -30,7 +30,8 @@ struct TaskHeader {
     uint8_t taskType;      // Defines task behavior (GPIO, PWM, etc.)
     uint8_t taskPriority;  // Defines execution priority
     uint16_t binarySize;   // Size of the task binary stored
-    //uint32_t flashAddress;
+    uint8_t status;        // (planned: running/paused)
+    uint32_t flashAddress; // (only if Flash is used)
 };
 
 // Task function prototypes
