@@ -25,8 +25,13 @@
 #define BAUD 9600   // Define Baud Rate
 #define UBRR 51   // Define UBRR Value
 
+
 #define MAX_TASK_BINARY_SIZE 512  // Adjust as needed
 #define HEADER_SIZE sizeof(struct TaskHeader)
+
+#define EEPROM_SIZE 1024 
+#define TASK_STORAGE_SIZE 128  // If each task needs 128 bytes total
+#define MAX_TASK_SLOTS (EEPROM_SIZE / TASK_STORAGE_SIZE)  // EEPROM_SIZE = 1024
 
 struct TaskHeader {
     uint8_t taskID;        // Unique task identifier
@@ -54,6 +59,10 @@ void vApplicationIdleHook(void) {
 portSHORT main(void) {
     // Initialize UART
     uart_init();
+    char heap[6];
+    uart_transmit_string("Free heap: ");
+    uart_transmit_number(xPortGetFreeHeapSize());
+    uart_transmit('\n');
     
     // Load stored tasks from EEPROM
     //load_tasks_from_eeprom();
@@ -94,6 +103,7 @@ unsigned char uart_receive(void) {
 void uart_transmit_string(const char *str) {
     while (*str) {
         uart_transmit(*str++);
+        _delay_ms(2);
     }
 }
 
@@ -105,28 +115,86 @@ void uart_transmit_hex(uint8_t value) {
     uart_transmit_string(hex);
 }
 
+void uart_transmit_number(uint16_t num) {
+    char buf[6];
+    uint8_t i = 0;
+
+    // Convert to decimal (reverse order)
+    do {
+        buf[i++] = '0' + (num % 10);
+        num /= 10;
+    } while (num > 0);
+
+    // Send in correct order
+    while (i > 0) {
+        uart_transmit(buf[--i]);
+    }
+}
+
 // ---------------- Task Status Report ----------------
 
 void list_running_tasks() {
     struct TaskHeader task;
     uint8_t task_found = 0; // Flag to check if any task exists
-    
-    uart_transmit_string("List of Tasks: ");
 
-    for (uint8_t i = 0; i < 10; i++) {
-        uint16_t addr = i * (sizeof(struct TaskHeader) + 256);
+    uart_transmit_string("List of Tasks:");
+
+    for (uint8_t i = 0; i < MAX_TASK_SLOTS; i++) {
+        uint16_t addr = i * TASK_STORAGE_SIZE;
         eeprom_read_block((void *)&task, (const void *)addr, sizeof(struct TaskHeader));
 
         if (task.taskID != 0xFF) {  // If valid task exists
             uart_transmit_string("\nSlot ");
             uart_transmit_hex(i);
             uart_transmit_string(": ");
-            uart_transmit_string("T ID: ");
+
+            uart_transmit_string("ID=");
             uart_transmit_hex(task.taskID);
-            uart_transmit_string(" | Priority: ");
-            uart_transmit_hex(task.taskPriority);
-            uart_transmit_string(" | Type: ");
+
+            uart_transmit_string(" Type: ");
             uart_transmit_hex(task.taskType);
+
+            switch (task.taskType) {
+                case 0:
+                    uart_transmit_string(" (GPIO)");
+                    break; 
+                case 1:
+                    uart_transmit_string(" (PWM)");
+                    break;
+                case 2:
+                    uart_transmit_string(" (Serial)");
+                    break;
+                default:
+                    uart_transmit_string(" (Custom)");
+            }
+
+            uart_transmit_string(", Priority=");
+            uart_transmit_hex(task.taskPriority);
+
+            uart_transmit_string(", Size: ");
+            uart_transmit_hex(task.binarySize);
+            uart_transmit_string(" (");
+            uart_transmit_number(task.binarySize);
+            uart_transmit_string(" byte)");
+
+            uart_transmit_string(" Status: ");
+            uart_transmit_hex(task.status);
+
+            if (task.status == 1)
+                uart_transmit_string(" (Running)");
+            else if (task.status == 0)
+                uart_transmit_string(" (Paused)");
+            else
+                uart_transmit_string(" (Unknown)");
+
+            uart_transmit_string(", FlashAddr=0x");
+
+            // Flash address is 32-bit, print each byte
+            uart_transmit_hex((task.flashAddress >> 24) & 0xFF);
+            uart_transmit_hex((task.flashAddress >> 16) & 0xFF);
+            uart_transmit_hex((task.flashAddress >> 8) & 0xFF);
+            uart_transmit_hex(task.flashAddress & 0xFF);
+
             task_found = 1;
         }
     }
@@ -136,9 +204,10 @@ void list_running_tasks() {
     }
 }
 
+
 void delete_task_eeprom(uint8_t taskID) {
     struct TaskHeader task;
-    uint16_t addr = taskID * (sizeof(struct TaskHeader) + 256); // Adjust for binary size
+    uint16_t addr = taskID * TASK_STORAGE_SIZE;
 
     // Read the task from EEPROM
     eeprom_read_block((void *)&task, (const void *)addr, sizeof(struct TaskHeader));
@@ -166,8 +235,8 @@ void delete_task_eeprom(uint8_t taskID) {
 void delete_all_tasks() {
     struct TaskHeader emptyTask = {0xFF}; // Empty task header
 
-    for (uint8_t i = 0; i < 10; i++) {
-        uint16_t addr = i * (sizeof(struct TaskHeader) + 256);
+    for (uint8_t i = 0; i < MAX_TASK_SLOTS; i++) {
+        uint16_t addr = i * TASK_STORAGE_SIZE;
         eeprom_update_block((const void *)&emptyTask, (void *)addr, sizeof(struct TaskHeader));
 
         for (uint16_t j = 0; j < 256; j++) {
@@ -181,10 +250,8 @@ void delete_all_tasks() {
 
 // ---------------- Task Reception & Storage ----------------
 
-#define TASK_STORAGE_SIZE 256  // Fixed storage size per task
-
 void store_task_eeprom(struct TaskHeader *header, uint8_t *binaryData) {
-    uint16_t addr = header->taskID * (sizeof(struct TaskHeader) + header->binarySize);
+    uint16_t addr = header->taskID * TASK_STORAGE_SIZE;
 
     struct TaskHeader existingTask;
     eeprom_read_block((void *)&existingTask, (const void *)addr, sizeof(struct TaskHeader));
@@ -223,7 +290,7 @@ void load_tasks_from_eeprom() {
     struct TaskHeader task;
     uint8_t found = 0;  // Track if any task is found
 
-    for (uint8_t i = 0; i < 10; i++) {
+    for (uint8_t i = 0; i < MAX_TASK_SLOTS; i++) {
         uint16_t addr = i * TASK_STORAGE_SIZE;
         eeprom_read_block((void *)&task, (const void *)addr, sizeof(struct TaskHeader));
 
@@ -248,8 +315,8 @@ void debug_eeprom_tasks() {
 
     uart_transmit_string("EEPROM Debug:");
 
-    for (uint8_t i = 0; i < 10; i++) {
-        uint16_t addr = i * (sizeof(struct TaskHeader) + 256);
+    for (uint8_t i = 0; i < MAX_TASK_SLOTS; i++) {
+        uint16_t addr = i * TASK_STORAGE_SIZE;
         eeprom_read_block((void *)&task, (const void *)addr, sizeof(struct TaskHeader));
         
         uart_transmit('\n');
@@ -276,7 +343,6 @@ void debug_eeprom_tasks() {
 
 void vTaskReceive(void *pvParameters) {
     while (1) {
-        uint8_t inside_command = 0;
         uint16_t index = 0;
         uint8_t byte;
         uint8_t *rxBuffer = (uint8_t *)pvPortMalloc(HEADER_SIZE + MAX_TASK_BINARY_SIZE);
@@ -312,10 +378,13 @@ void vTaskReceive(void *pvParameters) {
         } else if (strcmp(tempBuffer, "DEBUG") == 0) {
             debug_eeprom_tasks();
         } else if (strncmp(tempBuffer, "TASK:", 5) == 0) {
-            // Start receiving binary payload AFTER "TASK:"
-            uart_transmit_string("\n<TASK: detected>\n");
-            
+            // Copy leftover data after "TASK:" from tempBuffer
             index = 0;
+            for (uint8_t i = 5; i < tempIndex; i++) {
+                rxBuffer[index++] = tempBuffer[i];
+            }
+
+            // Continue receiving the rest of the binary data
             while ((byte = uart_receive()) != END_MARKER && index < HEADER_SIZE + MAX_TASK_BINARY_SIZE) {
                 rxBuffer[index++] = byte;
             }
@@ -364,7 +433,7 @@ void vTaskExecution(void *pvParameters) {
 
     if (!taskBinary) return; // Handle memory allocation failure
 
-    uint16_t addr = task->taskID * (sizeof(struct TaskHeader) + 256); // Fixed slot size for now
+    uint16_t addr = task->taskID * TASK_STORAGE_SIZE;  // ? consistent with store/load/delete
     eeprom_read_block((void *)taskBinary, (const void *)(addr + sizeof(struct TaskHeader)), task->binarySize);
 
     while (1) {
