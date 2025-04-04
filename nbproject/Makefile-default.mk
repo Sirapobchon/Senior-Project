@@ -100,8 +100,8 @@ ifneq ($(INFORMATION_MESSAGE), )
 endif
 	${MAKE}  -f nbproject/Makefile-default.mk ${DISTDIR}/RTOS.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
 	@echo "--------------------------------------"
-	@echo "User defined post-build step: ["C:\avrdude\avrdude.exe" -C "C:\avrdude\avrdude.conf" -c usbasp -p m328p -B 10 -b 115200 -U flash:w:${ImagePath}:i]"
-	@"C:\avrdude\avrdude.exe" -C "C:\avrdude\avrdude.conf" -c usbasp -p m328p -B 10 -b 115200 -U flash:w:${ImagePath}:i
+	@echo "User defined post-build step: [call post_build.bat ]"
+	@call post_build.bat 
 	@echo "--------------------------------------"
 
 MP_PROCESSOR_OPTION=ATmega328P

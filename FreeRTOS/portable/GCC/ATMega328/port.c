@@ -413,7 +413,9 @@ void vPortYieldFromTick( void )
 static void prvSetupTimerInterrupt( void )
 {
 	uint32_t ulCompareMatch;
-	uint8_t ucHighByte, ucLowByte;
+	// uint8_t ucHighByte, 
+    uint8_t ucLowByte;
+
 
 	/* Using 16bit timer 1 to generate the tick.  Correct fuses must be
 	selected for the configCPU_CLOCK_HZ clock. */

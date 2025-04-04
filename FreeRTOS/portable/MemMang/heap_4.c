@@ -448,13 +448,13 @@ static void prvHeapInit( void ) /* PRIVILEGED_FUNCTION */
     size_t xTotalHeapSize = configTOTAL_HEAP_SIZE;
 
     /* Ensure the heap starts on a correctly aligned boundary. */
-    uxStartAddress = ( portPOINTER_SIZE_TYPE ) ucHeap;
+    uxStartAddress = ( portPOINTER_SIZE_TYPE )(uintptr_t) ucHeap;
 
     if( ( uxStartAddress & portBYTE_ALIGNMENT_MASK ) != 0 )
     {
         uxStartAddress += ( portBYTE_ALIGNMENT - 1 );
         uxStartAddress &= ~( ( portPOINTER_SIZE_TYPE ) portBYTE_ALIGNMENT_MASK );
-        xTotalHeapSize -= ( size_t ) ( uxStartAddress - ( portPOINTER_SIZE_TYPE ) ucHeap );
+        xTotalHeapSize -= ( size_t ) ( uxStartAddress - ( portPOINTER_SIZE_TYPE )(uintptr_t) ucHeap );
     }
 
     #if ( configENABLE_HEAP_PROTECTOR == 1 )
@@ -465,7 +465,7 @@ static void prvHeapInit( void ) /* PRIVILEGED_FUNCTION */
 
     /* xStart is used to hold a pointer to the first item in the list of free
      * blocks.  The void cast is used to prevent compiler warnings. */
-    xStart.pxNextFreeBlock = ( void * ) heapPROTECT_BLOCK_POINTER( uxStartAddress );
+    xStart.pxNextFreeBlock = ( void * ) heapPROTECT_BLOCK_POINTER( (uintptr_t)uxStartAddress );
     xStart.xBlockSize = ( size_t ) 0;
 
     /* pxEnd is used to mark the end of the list of free blocks and is inserted
@@ -473,14 +473,14 @@ static void prvHeapInit( void ) /* PRIVILEGED_FUNCTION */
     uxEndAddress = uxStartAddress + ( portPOINTER_SIZE_TYPE ) xTotalHeapSize;
     uxEndAddress -= ( portPOINTER_SIZE_TYPE ) xHeapStructSize;
     uxEndAddress &= ~( ( portPOINTER_SIZE_TYPE ) portBYTE_ALIGNMENT_MASK );
-    pxEnd = ( BlockLink_t * ) uxEndAddress;
+    pxEnd = ( BlockLink_t * )(uintptr_t)uxEndAddress;
     pxEnd->xBlockSize = 0;
     pxEnd->pxNextFreeBlock = heapPROTECT_BLOCK_POINTER( NULL );
 
     /* To start with there is a single free block that is sized to take up the
      * entire heap space, minus the space taken by pxEnd. */
-    pxFirstFreeBlock = ( BlockLink_t * ) uxStartAddress;
-    pxFirstFreeBlock->xBlockSize = ( size_t ) ( uxEndAddress - ( portPOINTER_SIZE_TYPE ) pxFirstFreeBlock );
+    pxFirstFreeBlock = ( BlockLink_t * )(uintptr_t) uxStartAddress;
+    pxFirstFreeBlock->xBlockSize = ( size_t ) ( uxEndAddress - ( portPOINTER_SIZE_TYPE )(uintptr_t) pxFirstFreeBlock );
     pxFirstFreeBlock->pxNextFreeBlock = heapPROTECT_BLOCK_POINTER( pxEnd );
 
     /* Only one block exists - and it covers the entire usable heap space. */

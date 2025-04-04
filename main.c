@@ -44,6 +44,9 @@ struct TaskHeader {
 
 // Task function prototypes
 void uart_init(void);
+void uart_transmit(unsigned char data);
+void uart_transmit_string(const char *str);
+void uart_transmit_number(uint16_t num);
 void list_running_tasks(void);
 void delete_task_eeprom(uint8_t taskID);
 void vTaskExecution(void *pvParameters);
@@ -56,10 +59,16 @@ void vApplicationIdleHook(void) {
     // Idle Hook (Optional)
 }
 
+void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName) {
+    uart_transmit_string("\n[ERROR] Stack overflow in task: ");
+    uart_transmit_string(pcTaskName);
+    uart_transmit('\n');
+    while (1); // Halt system for safety
+}
+
 portSHORT main(void) {
     // Initialize UART
     uart_init();
-    char heap[6];
     uart_transmit_string("Free heap: ");
     uart_transmit_number(xPortGetFreeHeapSize());
     uart_transmit('\n');
@@ -103,7 +112,6 @@ unsigned char uart_receive(void) {
 void uart_transmit_string(const char *str) {
     while (*str) {
         uart_transmit(*str++);
-        _delay_ms(2);
     }
 }
 
@@ -116,6 +124,16 @@ void uart_transmit_hex(uint8_t value) {
 }
 
 void uart_transmit_number(uint16_t num) {
+    if (num == 0) {
+        uart_transmit('0');
+        return;
+    }
+
+    if (num < 0) {
+        uart_transmit('-');
+        num = -num;
+    }
+    
     char buf[6];
     uint8_t i = 0;
 
@@ -223,7 +241,7 @@ void delete_task_eeprom(uint8_t taskID) {
     struct TaskHeader emptyTask = {0xFF}; // Mark as empty
     eeprom_update_block((const void *)&emptyTask, (void *)addr, sizeof(struct TaskHeader));
 
-    for (uint16_t i = 0; i < 256; i++) {
+    for (uint16_t i = 0; i < (TASK_STORAGE_SIZE - sizeof(struct TaskHeader)); i++) {
         eeprom_update_byte((void *)(addr + sizeof(struct TaskHeader) + i), 0xFF);
     }
 
@@ -239,8 +257,8 @@ void delete_all_tasks() {
         uint16_t addr = i * TASK_STORAGE_SIZE;
         eeprom_update_block((const void *)&emptyTask, (void *)addr, sizeof(struct TaskHeader));
 
-        for (uint16_t j = 0; j < 256; j++) {
-            eeprom_update_byte((void *)(addr + sizeof(struct TaskHeader) + j), 0xFF);
+        for (uint16_t i = 0; i < (TASK_STORAGE_SIZE - sizeof(struct TaskHeader)); i++) {
+            eeprom_update_byte((void *)(addr + sizeof(struct TaskHeader) + i), 0xFF);
         }
     }
 
@@ -351,6 +369,10 @@ void vTaskReceive(void *pvParameters) {
             uart_transmit_string("Memory alloc failed\n");
             vTaskDelay(pdMS_TO_TICKS(1000));
             continue;
+        }
+
+        while (UCSR0A & (1 << RXC0)) {
+            (void)UDR0;
         }
 
         // Wait for start marker
