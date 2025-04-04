@@ -285,7 +285,7 @@ void store_task_eeprom(struct TaskHeader *header, uint8_t *binaryData) {
     struct TaskHeader verifyTask;
     eeprom_read_block((void *)&verifyTask, (const void *)addr, sizeof(struct TaskHeader));
 
-    uart_transmit_string("EEPROM Write Check - ID: ");
+    uart_transmit_string("\nEEPROM Write Check - ID: ");
     uart_transmit_hex(verifyTask.taskID);
     uart_transmit_string(", Type: ");
     uart_transmit_hex(verifyTask.taskType);
