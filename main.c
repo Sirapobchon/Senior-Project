@@ -25,6 +25,9 @@
 #define BAUD 9600   // Define Baud Rate
 #define UBRR 51   // Define UBRR Value
 
+#define MAX_TASK_BINARY_SIZE 512  // Adjust as needed
+#define HEADER_SIZE sizeof(struct TaskHeader)
+
 struct TaskHeader {
     uint8_t taskID;        // Unique task identifier
     uint8_t taskType;      // Defines task behavior (GPIO, PWM, etc.)
@@ -53,7 +56,7 @@ portSHORT main(void) {
     uart_init();
     
     // Load stored tasks from EEPROM
-    load_tasks_from_eeprom();
+    //load_tasks_from_eeprom();
     
     // Create a task for receiving new task files over UART
     xTaskCreate(vTaskReceive, "ReceiveTask", 192, NULL, 2, NULL);
@@ -142,7 +145,7 @@ void delete_task_eeprom(uint8_t taskID) {
 
     // Check if the task exists
     if (task.taskID == 0xFF) {
-        uart_transmit_string("No Task ID: ");
+        uart_transmit_string("\nNo Task ID: ");
         uart_transmit_hex(taskID);
         return;
     }
@@ -155,7 +158,7 @@ void delete_task_eeprom(uint8_t taskID) {
         eeprom_update_byte((void *)(addr + sizeof(struct TaskHeader) + i), 0xFF);
     }
 
-    uart_transmit_string("Task Deleted ID: ");
+    uart_transmit_string("\nTask Deleted ID: ");
     uart_transmit_hex(taskID);
 }
 
@@ -172,43 +175,11 @@ void delete_all_tasks() {
         }
     }
 
-    uart_transmit_string("All Tasks Deleted");
+    uart_transmit_string("\nAll Tasks Deleted");
 }
 
 
 // ---------------- Task Reception & Storage ----------------
-
-void receive_task_data(char *buffer, int max_length) {
-    int index = 0;
-    unsigned char incoming;
-    uint8_t inside_command = 0;  // Flag to track if inside '< >'
-
-    while (index < max_length - 1) {
-        incoming = uart_receive();
-
-        // Check if it's a command (inside < >)
-        if (incoming == START_MARKER) {
-            inside_command = 1;  // We are inside a command
-            index = 0;  // Reset index for command buffer
-        } 
-        else if (incoming == END_MARKER) {
-            inside_command = 0;  // End of command
-            buffer[index] = '\0'; // Null-terminate buffer
-            return;
-        } 
-        else if (inside_command) {
-            // Store command data
-            buffer[index++] = incoming;
-        } 
-        else {
-            // Not inside < >, echo back to Serial Monitor
-            uart_transmit(incoming);
-        }
-    }
-
-    buffer[index] = '\0'; // Null-terminate in case of overflow
-    uart_transmit_string("Buffer Overflow\n");  // Debug: Buffer Overflow (Should Not Happen)
-}
 
 #define TASK_STORAGE_SIZE 256  // Fixed storage size per task
 
@@ -304,48 +275,61 @@ void debug_eeprom_tasks() {
 // ---------------- FreeRTOS Task Definitions ----------------
 
 void vTaskReceive(void *pvParameters) {
-    while (1) {        
-        char buffer[32];  
-        receive_task_data(buffer, sizeof(buffer));
+    while (1) {
+        uint8_t inside_command = 0;
+        uint16_t index = 0;
+        uint8_t byte;
+        uint8_t *rxBuffer = (uint8_t *)pvPortMalloc(HEADER_SIZE + MAX_TASK_BINARY_SIZE);
 
-        uart_transmit_string("Received: ");
-        for (uint8_t i = 0; i < strlen(buffer); i++) {
-            uart_transmit_hex(buffer[i]);  // Print in HEX format
-            uart_transmit(' ');
+        if (!rxBuffer) {
+            uart_transmit_string("Memory alloc failed\n");
+            vTaskDelay(pdMS_TO_TICKS(1000));
+            continue;
         }
-        uart_transmit('\n');
 
-        if (buffer[0] != '\0') { // Ensure buffer is not empty
-            if (strcmp(buffer, "LIST") == 0) {
-                list_running_tasks();
-            } else if (strcmp(buffer, "DELETE") == 0) {
-                delete_all_tasks();
-            } else if (strncmp(buffer, "DELETE:", 7) == 0) {
-                uint8_t taskID = buffer[7] - '0';
-                delete_task_eeprom(taskID);
-            } else if (strcmp(buffer, "DEBUG") == 0) {
-                debug_eeprom_tasks();
-            } else if (strncmp(buffer, "TASK:", 5) == 0) {
-                uart_transmit_string("Task Command Detected\n");
+        // Wait for start marker
+        do {
+            byte = uart_receive();
+        } while (byte != START_MARKER);
 
-                if (strlen(buffer) < 10) {
-                    uart_transmit_string("Error: Task Data Too Short!");
-                    return;
-                }
+        // Check for <LIST>, <DELETE>, etc. by reading text-only first
+        char tempBuffer[16] = {0};
+        uint8_t tempIndex = 0;
+        while ((byte = uart_receive()) != END_MARKER && tempIndex < sizeof(tempBuffer) - 1) {
+            if (byte == '\n' || byte == '\r') break;
+            tempBuffer[tempIndex++] = byte;
+        }
+        tempBuffer[tempIndex] = '\0';
 
+         // Check if it's a known ASCII command
+        if (strcmp(tempBuffer, "LIST") == 0) {
+            list_running_tasks();
+        } else if (strncmp(tempBuffer, "DELETE:", 7) == 0) {
+            uint8_t taskID = tempBuffer[7] - '0';
+            delete_task_eeprom(taskID);
+        } else if (strcmp(tempBuffer, "DELETE") == 0) {
+            delete_all_tasks();
+        } else if (strcmp(tempBuffer, "DEBUG") == 0) {
+            debug_eeprom_tasks();
+        } else if (strncmp(tempBuffer, "TASK:", 5) == 0) {
+            // Start receiving binary payload AFTER "TASK:"
+            uart_transmit_string("\n<TASK: detected>\n");
+            
+            index = 0;
+            while ((byte = uart_receive()) != END_MARKER && index < HEADER_SIZE + MAX_TASK_BINARY_SIZE) {
+                rxBuffer[index++] = byte;
+            }
+
+            if (index >= HEADER_SIZE) {
                 struct TaskHeader newTask;
-                newTask.taskID = buffer[5];  // Byte 1: Task ID
-                newTask.taskType = buffer[6]; // Byte 2: Task Type
-                newTask.taskPriority = buffer[7]; // Byte 3: Priority
+                newTask.taskID       = rxBuffer[0];
+                newTask.taskType     = rxBuffer[1];
+                newTask.taskPriority = rxBuffer[2];
 
-                // Extract Binary Size (16-bit value, little endian)
-                union {
-                    uint16_t size;
-                    uint8_t bytes[2];
-                } sizeConverter;
-                sizeConverter.bytes[0] = buffer[8];  // Low byte
-                sizeConverter.bytes[1] = buffer[9];  // High byte
-                newTask.binarySize = sizeConverter.size;
+                // Binary size (little endian)
+                newTask.binarySize   = rxBuffer[3] | (rxBuffer[4] << 8);
+                newTask.status       = rxBuffer[5];
+                newTask.flashAddress = 0;
 
                 uart_transmit_string("Parsed Task - ID: ");
                 uart_transmit_hex(newTask.taskID);
@@ -357,36 +341,20 @@ void vTaskReceive(void *pvParameters) {
                 uart_transmit_hex(newTask.binarySize);
                 uart_transmit('\n');
 
-                // Store in EEPROM
-                store_task_eeprom(&newTask, (uint8_t *)(buffer + 10));
-
-                // Verify EEPROM Write
-                struct TaskHeader checkTask;
-                uint16_t addr = newTask.taskID * (sizeof(struct TaskHeader) + newTask.binarySize);
-                eeprom_read_block((void *)&checkTask, (const void *)addr, sizeof(struct TaskHeader));
-
-                uart_transmit_string("EEPROM Write Check - ID: ");
-                uart_transmit_hex(checkTask.taskID);
-                uart_transmit_string(", Type: ");
-                uart_transmit_hex(checkTask.taskType);
-                uart_transmit_string(", Priority: ");
-                uart_transmit_hex(checkTask.taskPriority);
-                uart_transmit_string(", Size: ");
-                uart_transmit_hex(checkTask.binarySize);
-                uart_transmit('\n');
-
-                if (checkTask.taskID != newTask.taskID) {
-                    uart_transmit_string("Task Store Error!\n");
-                } else {
+                if (newTask.binarySize > 0 && newTask.binarySize <= MAX_TASK_BINARY_SIZE) {
+                    store_task_eeprom(&newTask, &rxBuffer[HEADER_SIZE]);
                     uart_transmit_string("Task Stored\n");
+                } else {
+                    uart_transmit_string("Invalid Binary Size\n");
                 }
             } else {
-                uart_transmit_string("Unknown Command");
+                uart_transmit_string("Corrupted or Too Short Payload\n");
             }
+        } else {
+            uart_transmit_string("Unknown Command\n");
         }
-        else{
-            uart_transmit_string("Unknown Command");
-        }
+
+        vPortFree(rxBuffer);
     }
 }
 
@@ -396,7 +364,7 @@ void vTaskExecution(void *pvParameters) {
 
     if (!taskBinary) return; // Handle memory allocation failure
 
-    uint16_t addr = task->taskID * (sizeof(struct TaskHeader) + task->binarySize);
+    uint16_t addr = task->taskID * (sizeof(struct TaskHeader) + 256); // Fixed slot size for now
     eeprom_read_block((void *)taskBinary, (const void *)(addr + sizeof(struct TaskHeader)), task->binarySize);
 
     while (1) {
