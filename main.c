@@ -69,9 +69,6 @@ void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName) {
 portSHORT main(void) {
     // Initialize UART
     uart_init();
-    uart_transmit_string("Free heap: ");
-    uart_transmit_number(xPortGetFreeHeapSize());
-    uart_transmit('\n');
     
     // Load stored tasks from EEPROM
     //load_tasks_from_eeprom();
@@ -364,9 +361,15 @@ void vTaskReceive(void *pvParameters) {
         uint16_t index = 0;
         uint8_t byte;
         uint8_t *rxBuffer = (uint8_t *)pvPortMalloc(HEADER_SIZE + MAX_TASK_BINARY_SIZE);
-
+        
+        uart_transmit_string("Requesting heap: ");
+        uart_transmit_number(HEADER_SIZE + MAX_TASK_BINARY_SIZE);
+        uart_transmit('\n');
+        
         if (!rxBuffer) {
-            uart_transmit_string("Memory alloc failed\n");
+            uart_transmit_string("Memory alloc failed, free: ");
+            uart_transmit_number(xPortGetFreeHeapSize());
+            uart_transmit('\n');
             vTaskDelay(pdMS_TO_TICKS(1000));
             continue;
         }
