@@ -5,3 +5,4 @@ echo Uploading with avrdude...
 echo --------------------------------------
 echo AVR Memory Usage:
 "c:\avr-gcc-14.1.0-x64-windows\bin\avr-size.exe" -B dist\default\production\RTOS.X.production.elf
+PAUSE
