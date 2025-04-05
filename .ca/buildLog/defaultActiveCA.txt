@@ -1,0 +1,8 @@
+rm -f *.hex *.elf *.o
+[31mrm: cannot remove `*.hex': Invalid argument
+rm: cannot remove `*.elf': Invalid argument
+rm: cannot remove `*.o': Invalid argument[0m
+[31mmake: *** [Makefile:87: clean] Error 1[0m
+[31mCLEAN FAILED (exit value 2, total time: 106ms)[0m
+[31mmake: *** No rule to make target 'main.o', needed by 'main.elf'.  Stop.[0m
+[31mBUILD FAILED (exit value 2, total time: 77ms)[0m
