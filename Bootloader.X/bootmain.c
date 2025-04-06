@@ -1,8 +1,6 @@
-int main(void);
-
-__attribute__((section(".vectors"), used, naked))
+__attribute__((naked, section(".init0"), used))
 void _start(void) {
-    __asm__ __volatile__("jmp main");
+    asm volatile ("jmp main");
 }
 
 /*
@@ -29,7 +27,7 @@ void _start(void) {
 #define FLASH_TASK_LIMIT  0x7000
 #define SPM_PAGESIZE      128
 
-uint32_t currentFlashAddress = FLASH_TASK_START;
+uint32_t currentFlashAddress;
 
 void uart_init() {
     UBRR0H = (unsigned char)(UBRR_VALUE >> 8);
@@ -44,13 +42,23 @@ void uart_transmit(uint8_t data) {
 }
 
 void uart_transmit_string(const char *str) {
-    while (*str) {
-        uart_transmit(*str++);
+    char c;
+    while ((c = pgm_read_byte(str++))) {
+        uart_transmit(c);
     }
 }
 
 uint8_t uart_receive() {
     while (!(UCSR0A & (1 << RXC0)));
+    return UDR0;
+}
+
+uint8_t uart_receive_timeout(uint16_t timeout_ms) {
+    uint16_t count = 0;
+    while (!(UCSR0A & (1 << RXC0))) {
+        _delay_ms(1);
+        if (++count >= timeout_ms) return 0xFF;  // timeout marker
+    }
     return UDR0;
 }
 
@@ -108,38 +116,50 @@ void process_task(uint8_t *data, uint16_t size) {
     currentFlashAddress = addr;
 }
 
+void blink_light(void){
+    PORTB ^= (1 << PB1);
+    _delay_ms(200);
+}
+
 void read_packet() {
-    uint8_t buffer[512];
+    static uint8_t buffer[128];
     uint16_t index = 0;
     uint8_t b;
+    
+    uart_transmit_string(PSTR("<TASK> or <RUN>\n"));
 
+    // Wait for '<'
     while (1) {
-        // Wait for '<'
-        while ((b = uart_receive()) != START_MARKER);
+        b = uart_receive_timeout(10);  // wait max 10 ms
 
-        // Read command
-        index = 0;
-        while ((b = uart_receive()) != END_MARKER && index < sizeof(buffer) - 1) {
-            buffer[index++] = b;
-        }
-        buffer[index] = '\0';
+        if (b == START_MARKER) break;
+        blink_light();
+    }
+    
+    PORTB &= ~(1 << PB1);  // LED off
 
-        // Check for RUN
-        if (strncmp((char *)buffer, "RUN", 3) == 0) {
-            jump_to_rtos();
-        }
+    // Read command
+    index = 0;
+    while ((b = uart_receive()) != END_MARKER && index < sizeof(buffer) - 1) {
+        buffer[index++] = b;
+    }
+    buffer[index] = '\0';
 
-        // Check for TASK
-        if (strncmp((char *)buffer, "TASK:", 5) == 0) {
-            uint16_t dataSize = index - 5;
-            if (dataSize > 0) {
-                process_task(&buffer[5], dataSize);
-            } else {
-                uart_transmit_string("Empty TASK payload\n");
-            }
+    // Check for RUN
+    if (strncmp((char *)buffer, "RUN", 3) == 0) {
+        jump_to_rtos();
+    }
+
+    // Check for TASK
+    if (strncmp((char *)buffer, "TASK:", 5) == 0) {
+        uint16_t dataSize = index - 5;
+        if (dataSize > 0) {
+            process_task(&buffer[5], dataSize);
         } else {
-            uart_transmit_string("Unknown command\n");
+            uart_transmit_string(PSTR("Empty TASK payload\n"));
         }
+    } else {
+        uart_transmit_string(PSTR("Unknown command\n"));
     }
 }
 
@@ -149,13 +169,9 @@ int main(void) {
 
     uart_init();
     
-    _delay_ms(1000);
-    
-    uart_transmit_string("Bootloader starts\n");
+    uart_transmit_string(PSTR("Bootloader Ready\n"));
 
     while (1) {
-        uart_transmit_string("Hello World\n");
-        _delay_ms(1000);
         read_packet(); // <-- This is now referenced!
     }
 }

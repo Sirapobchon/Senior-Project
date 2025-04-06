@@ -17,11 +17,8 @@ c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(
 
 Discarded input sections
 
- .text          0x0000000000000000        0x4 C:/Users/Sirapob-ASUSTUF/.mchp_packs/Microchip/ATmega_DFP/3.3.279/xc8/avr/lib/avr5/crtatmega328p.o
  .data          0x0000000000000000        0x0 C:/Users/Sirapob-ASUSTUF/.mchp_packs/Microchip/ATmega_DFP/3.3.279/xc8/avr/lib/avr5/crtatmega328p.o
  .bss           0x0000000000000000        0x0 C:/Users/Sirapob-ASUSTUF/.mchp_packs/Microchip/ATmega_DFP/3.3.279/xc8/avr/lib/avr5/crtatmega328p.o
- .vectors       0x0000000000000000       0x68 C:/Users/Sirapob-ASUSTUF/.mchp_packs/Microchip/ATmega_DFP/3.3.279/xc8/avr/lib/avr5/crtatmega328p.o
- .init0         0x0000000000000000        0x0 C:/Users/Sirapob-ASUSTUF/.mchp_packs/Microchip/ATmega_DFP/3.3.279/xc8/avr/lib/avr5/crtatmega328p.o
  .init2         0x0000000000000000        0xc C:/Users/Sirapob-ASUSTUF/.mchp_packs/Microchip/ATmega_DFP/3.3.279/xc8/avr/lib/avr5/crtatmega328p.o
  .init9         0x0000000000000000        0x8 C:/Users/Sirapob-ASUSTUF/.mchp_packs/Microchip/ATmega_DFP/3.3.279/xc8/avr/lib/avr5/crtatmega328p.o
  .text          0x0000000000000000        0x0 build/default/production/bootmain.o
@@ -116,58 +113,104 @@ Address of section .data set to 0x800100
 LOAD C:/Users/Sirapob-ASUSTUF/.mchp_packs/Microchip/ATmega_DFP/3.3.279/xc8/avr/lib/avr5/crtatmega328p.o
                 0x0000000000000001                __MPLAB_BUILD = 0x1
 
-.text           0x0000000000007000      0x421
- *(.vectors)
- .vectors       0x0000000000007000        0x4 build/default/production/bootmain.o
+.vectors        0x0000000000007000       0x6c
+ *(.init0)
+ .init0         0x0000000000007000        0x0 C:/Users/Sirapob-ASUSTUF/.mchp_packs/Microchip/ATmega_DFP/3.3.279/xc8/avr/lib/avr5/crtatmega328p.o
+                0x0000000000007000                __init
+ .init0         0x0000000000007000        0x4 build/default/production/bootmain.o
                 0x0000000000007000                _start
+ *(.vectors)
+ .vectors       0x0000000000007004       0x68 C:/Users/Sirapob-ASUSTUF/.mchp_packs/Microchip/ATmega_DFP/3.3.279/xc8/avr/lib/avr5/crtatmega328p.o
+                0x0000000000007004                __vector_default
+                0x0000000000007004                __vectors
+
+.text           0x000000000000706c      0x40a
  *(.text)
+ .text          0x000000000000706c        0x4 C:/Users/Sirapob-ASUSTUF/.mchp_packs/Microchip/ATmega_DFP/3.3.279/xc8/avr/lib/avr5/crtatmega328p.o
+                0x000000000000706c                __vector_22
+                0x000000000000706c                __vector_1
+                0x000000000000706c                __vector_24
+                0x000000000000706c                __vector_12
+                0x000000000000706c                __bad_interrupt
+                0x000000000000706c                __vector_6
+                0x000000000000706c                __vector_3
+                0x000000000000706c                __vector_23
+                0x000000000000706c                __vector_25
+                0x000000000000706c                __vector_11
+                0x000000000000706c                __vector_13
+                0x000000000000706c                __vector_17
+                0x000000000000706c                __vector_19
+                0x000000000000706c                __vector_7
+                0x000000000000706c                __vector_5
+                0x000000000000706c                __vector_4
+                0x000000000000706c                __vector_9
+                0x000000000000706c                __vector_2
+                0x000000000000706c                __vector_21
+                0x000000000000706c                __vector_15
+                0x000000000000706c                __vector_8
+                0x000000000000706c                __vector_14
+                0x000000000000706c                __vector_10
+                0x000000000000706c                __vector_16
+                0x000000000000706c                __vector_18
+                0x000000000000706c                __vector_20
  *(.text*)
  .text.uart_init
-                0x0000000000007004       0x18 build/default/production/bootmain.o
-                0x0000000000007004                uart_init
+                0x0000000000007070       0x18 build/default/production/bootmain.o
+                0x0000000000007070                uart_init
  .text.uart_transmit
-                0x000000000000701c       0x10 build/default/production/bootmain.o
-                0x000000000000701c                uart_transmit
+                0x0000000000007088       0x10 build/default/production/bootmain.o
+                0x0000000000007088                uart_transmit
  .text.uart_transmit_string
-                0x000000000000702c       0x1e build/default/production/bootmain.o
-                0x000000000000702c                uart_transmit_string
+                0x0000000000007098       0x24 build/default/production/bootmain.o
+                0x0000000000007098                uart_transmit_string
  .text.uart_receive
-                0x000000000000704a       0x10 build/default/production/bootmain.o
-                0x000000000000704a                uart_receive
+                0x00000000000070bc       0x10 build/default/production/bootmain.o
+                0x00000000000070bc                uart_receive
+ .text.uart_receive_timeout
+                0x00000000000070cc       0x32 build/default/production/bootmain.o
+                0x00000000000070cc                uart_receive_timeout
  .text.send_flash_address
-                0x000000000000705a       0x82 build/default/production/bootmain.o
-                0x000000000000705a                send_flash_address
+                0x00000000000070fe       0x82 build/default/production/bootmain.o
+                0x00000000000070fe                send_flash_address
  .text.jump_to_rtos
-                0x00000000000070dc       0x10 build/default/production/bootmain.o
-                0x00000000000070dc                jump_to_rtos
+                0x0000000000007180       0x10 build/default/production/bootmain.o
+                0x0000000000007180                jump_to_rtos
  .text.write_flash_page
-                0x00000000000070ec       0x86 build/default/production/bootmain.o
-                0x00000000000070ec                write_flash_page
+                0x0000000000007190       0x86 build/default/production/bootmain.o
+                0x0000000000007190                write_flash_page
  .text.process_task
-                0x0000000000007172       0xea build/default/production/bootmain.o
-                0x0000000000007172                process_task
+                0x0000000000007216       0xea build/default/production/bootmain.o
+                0x0000000000007216                process_task
+ .text.blink_light
+                0x0000000000007300       0x1c build/default/production/bootmain.o
+                0x0000000000007300                blink_light
  .text.read_packet
-                0x000000000000725c       0xa2 build/default/production/bootmain.o
-                0x000000000000725c                read_packet
- .text.main     0x00000000000072fe       0x40 build/default/production/bootmain.o
-                0x00000000000072fe                main
+                0x000000000000731c       0xa6 build/default/production/bootmain.o
+                0x000000000000731c                read_packet
+ .text.main     0x00000000000073c2       0x16 build/default/production/bootmain.o
+                0x00000000000073c2                main
  .text.__dummy_fini
-                0x000000000000733e        0x2 c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(exit.o)
-                0x000000000000733e                _fini
- .text.memcpy   0x0000000000007340       0x16 c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(memcpy.o)
-                0x0000000000007340                memcpy
- .text.memset   0x0000000000007356       0x12 c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(memset.o)
-                0x0000000000007356                memset
- .text.strncmp  0x0000000000007368       0x3e c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strncmp.o)
-                0x0000000000007368                strncmp
+                0x00000000000073d8        0x2 c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(exit.o)
+                0x00000000000073d8                _fini
+ .text.memcpy   0x00000000000073da       0x16 c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(memcpy.o)
+                0x00000000000073da                memcpy
+ .text.memset   0x00000000000073f0       0x12 c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(memset.o)
+                0x00000000000073f0                memset
+ .text.strncmp  0x0000000000007402       0x3e c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strncmp.o)
+                0x0000000000007402                strncmp
  *(.rodata*)
- .rodata        0x00000000000073a6       0x7b build/default/production/bootmain.o
+ .rodata        0x0000000000007440       0x36 build/default/production/bootmain.o
 
-.bss            0x0000000000800100        0x0
+.bss            0x0000000000800100       0x84
                 0x0000000000800100                __bss_start = .
  *(.bss*)
+ .bss.buffer.2357
+                0x0000000000800100       0x80 build/default/production/bootmain.o
+ .bss.currentFlashAddress
+                0x0000000000800180        0x4 build/default/production/bootmain.o
+                0x0000000000800180                currentFlashAddress
  *(COMMON)
-                0x0000000000800100                __bss_end = .
+                0x0000000000800184                __bss_end = .
 LOAD build/default/production/bootmain.o
 START GROUP
 LOAD c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libm.a
@@ -187,17 +230,17 @@ LOAD data_init
 .trampolines    0x0000000000007000        0x0
  .trampolines   0x0000000000007000        0x0 linker stubs
 
-.debug_abbrev   0x0000000000000000      0x7eb
+.debug_abbrev   0x0000000000000000      0x7ea
  .debug_abbrev  0x0000000000000000      0x5a2 C:/Users/Sirapob-ASUSTUF/.mchp_packs/Microchip/ATmega_DFP/3.3.279/xc8/avr/lib/avr5/crtatmega328p.o
- .debug_abbrev  0x00000000000005a2      0x249 build/default/production/bootmain.o
+ .debug_abbrev  0x00000000000005a2      0x248 build/default/production/bootmain.o
 
-.debug_info     0x0000000000000000      0xec2
+.debug_info     0x0000000000000000      0xf7b
  .debug_info    0x0000000000000000      0x5f4 C:/Users/Sirapob-ASUSTUF/.mchp_packs/Microchip/ATmega_DFP/3.3.279/xc8/avr/lib/avr5/crtatmega328p.o
- .debug_info    0x00000000000005f4      0x8ce build/default/production/bootmain.o
+ .debug_info    0x00000000000005f4      0x987 build/default/production/bootmain.o
 
-.debug_line     0x0000000000000000      0x4d3
+.debug_line     0x0000000000000000      0x548
  .debug_line    0x0000000000000000      0x134 C:/Users/Sirapob-ASUSTUF/.mchp_packs/Microchip/ATmega_DFP/3.3.279/xc8/avr/lib/avr5/crtatmega328p.o
- .debug_line    0x0000000000000134      0x39f build/default/production/bootmain.o
+ .debug_line    0x0000000000000134      0x414 build/default/production/bootmain.o
 
 .debug_str      0x0000000000000000      0x208
  .debug_str     0x0000000000000000      0x208 C:/Users/Sirapob-ASUSTUF/.mchp_packs/Microchip/ATmega_DFP/3.3.279/xc8/avr/lib/avr5/crtatmega328p.o
@@ -208,15 +251,15 @@ LOAD data_init
  .note.gnu.avr.deviceinfo
                 0x0000000000000000       0x40 C:/Users/Sirapob-ASUSTUF/.mchp_packs/Microchip/ATmega_DFP/3.3.279/xc8/avr/lib/avr5/crtatmega328p.o
 
-.debug_loc      0x0000000000000000      0x334
- .debug_loc     0x0000000000000000      0x334 build/default/production/bootmain.o
+.debug_loc      0x0000000000000000      0x426
+ .debug_loc     0x0000000000000000      0x426 build/default/production/bootmain.o
 
-.debug_aranges  0x0000000000000000       0x70
+.debug_aranges  0x0000000000000000       0x80
  .debug_aranges
-                0x0000000000000000       0x70 build/default/production/bootmain.o
+                0x0000000000000000       0x80 build/default/production/bootmain.o
 
-.debug_ranges   0x0000000000000000       0x60
- .debug_ranges  0x0000000000000000       0x60 build/default/production/bootmain.o
+.debug_ranges   0x0000000000000000       0x88
+ .debug_ranges  0x0000000000000000       0x88 build/default/production/bootmain.o
 
 .comment        0x0000000000000000       0x5b
  .comment       0x0000000000000000       0x2f build/default/production/bootmain.o
@@ -249,15 +292,28 @@ LOAD data_init
  .note.GNU-stack
                 0x0000000000000000        0x0 c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strncmp.o)
 
-.debug_frame    0x0000000000000000      0x188
- .debug_frame   0x0000000000000000      0x188 build/default/production/bootmain.o
+.debug_frame    0x0000000000000000      0x1a8
+ .debug_frame   0x0000000000000000      0x1a8 build/default/production/bootmain.o
 
-.dinit          0x0000000000007422        0x7
- *fill*         0x0000000000007422        0x0 
- .dinit         0x0000000000007422        0x7 data_init
+progmem.data.__c.2368
+                0x0000000000007476       0x14
+ progmem.data.__c.2368
+                0x0000000000007476       0x14 build/default/production/bootmain.o
 
-.data.currentFlashAddress
-                0x0000000000800100        0x4 load address 0x0000000000007429
- .data.currentFlashAddress
-                0x0000000000800100        0x4 build/default/production/bootmain.o
-                0x0000000000800100                currentFlashAddress
+progmem.data.__c.2375
+                0x000000000000748a       0x12
+ progmem.data.__c.2375
+                0x000000000000748a       0x12 build/default/production/bootmain.o
+
+progmem.data.__c.2370
+                0x000000000000749c       0x11
+ progmem.data.__c.2370
+                0x000000000000749c       0x11 build/default/production/bootmain.o
+
+progmem.data.__c.2360
+                0x00000000000074ad       0x11
+ progmem.data.__c.2360
+                0x00000000000074ad       0x11 build/default/production/bootmain.o
+
+.dinit          0x00000000000074be        0x5
+ .dinit         0x00000000000074be        0x5 data_init

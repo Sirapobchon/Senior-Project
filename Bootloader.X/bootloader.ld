@@ -9,9 +9,14 @@ ENTRY(_start)
 
 SECTIONS
 {
-  .text : 
+  .vectors 0x7000 :
   {
-    *(.vectors)      /* Optional: jump vector to bootloader */
+    KEEP(*(.init0))  /* now _start() is safely the reset vector */
+    KEEP(*(.vectors))  /* add if needed, but no default jmp */
+  } > text
+
+  .text :
+  {
     *(.text)         /* Main code */
     *(.text*)        /* Subfunctions */
     *(.rodata*)      /* Constants */
