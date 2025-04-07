@@ -2,7 +2,7 @@
 MEMORY
 {
   text (rx)  : ORIGIN = 0x7000, LENGTH = 0x0800  /* 2 KB Bootloader region */
-  data  (rw!x): ORIGIN = 0x0100, LENGTH = 0x0100  /* 256 bytes SRAM */
+  data  (rw!x): ORIGIN = 0x0100, LENGTH = 0x0200  /* 512 bytes SRAM */
 }
 
 ENTRY(_start)
@@ -21,6 +21,12 @@ SECTIONS
     *(.text*)        /* Subfunctions */
     *(.rodata*)      /* Constants */
   } > text
+
+  .data :
+  {
+    *(.data)
+    *(.data*)
+  } > data
 
   .bss (NOLOAD) :
   {

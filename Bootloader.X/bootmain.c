@@ -26,6 +26,7 @@ void _start(void) {
 #define FLASH_TASK_START  0x2800
 #define FLASH_TASK_LIMIT  0x7000
 #define SPM_PAGESIZE      128
+ #define PACKET_TIMEOUT_MS 1000
 
 uint32_t currentFlashAddress;
 
@@ -45,6 +46,12 @@ void uart_transmit_string(const char *str) {
     char c;
     while ((c = pgm_read_byte(str++))) {
         uart_transmit(c);
+    }
+}
+
+void uart_transmit_string_R(const char *str) {
+    while (*str) {
+        uart_transmit(*str++);
     }
 }
 
@@ -122,38 +129,80 @@ void blink_light(void){
 }
 
 void read_packet() {
-    static uint8_t buffer[128];
+    static char buffer[128];
+    char tempBuffer[16] = {0};
     uint16_t index = 0;
     uint8_t b;
-    
+
     uart_transmit_string(PSTR("<TASK> or <RUN>\n"));
+    while (UCSR0A & (1 << RXC0)) (void)UDR0;
 
-    // Wait for '<'
+    // ? First: wait for '<'
+    uart_transmit_string(PSTR("Waiting for '<'...\n"));
     while (1) {
-        b = uart_receive_timeout(10);  // wait max 10 ms
-
+        b = uart_receive_timeout(10);
+        if (b == 0xFF) continue;
         if (b == START_MARKER) break;
         blink_light();
     }
-    
-    PORTB &= ~(1 << PB1);  // LED off
 
-    // Read command
+    // ? THEN this extra read loop was accidentally included
+    // Read AFTER '<' but before we start processing again ? this caused issues!
     index = 0;
-    while ((b = uart_receive()) != END_MARKER && index < sizeof(buffer) - 1) {
+    while (index < sizeof(buffer) - 1) {
+        b = uart_receive(); // blocking
+        if (b == END_MARKER) break;
+
         buffer[index++] = b;
+        uart_transmit('[');
+        uart_transmit(b);
+        uart_transmit(']');
     }
+
+    // ? BUT ? second read loop was still there too!
+    index = 0;
+    while (index < sizeof(buffer) - 1) {
+        b = uart_receive_timeout(200);
+        if (b == 0xFF || b == END_MARKER) break;
+
+        buffer[index++] = b;
+        uart_transmit('[');
+        uart_transmit(b);
+        uart_transmit(']');
+    }
+
+    PORTB &= ~(1 << PB1); // LED off
     buffer[index] = '\0';
 
-    // Check for RUN
-    if (strncmp((char *)buffer, "RUN", 3) == 0) {
-        jump_to_rtos();
-    }
+    while (index > 0 && (buffer[index - 1] == '\r' || buffer[index - 1] == '\n'))
+        buffer[--index] = '\0';
 
-    // Check for TASK
-    if (strncmp((char *)buffer, "TASK:", 5) == 0) {
+    uint8_t copyLen = (index < sizeof(tempBuffer) - 1) ? index : sizeof(tempBuffer) - 1;
+    for (uint8_t i = 0; i < copyLen; ++i)
+        tempBuffer[i] = buffer[i];
+    tempBuffer[copyLen] = '\0';
+
+    uart_transmit_string(PSTR("CMD: "));
+    if (tempBuffer[0]) uart_transmit_string_R(tempBuffer);
+    else uart_transmit_string(PSTR("(empty)"));
+    uart_transmit('\n');
+
+    uart_transmit_string(PSTR("HEX: "));
+    for (uint8_t i = 0; i < copyLen; ++i) {
+        uart_transmit('[');
+        uart_transmit("0123456789ABCDEF"[(tempBuffer[i] >> 4) & 0xF]);
+        uart_transmit("0123456789ABCDEF"[tempBuffer[i] & 0xF]);
+        uart_transmit(']');
+    }
+    uart_transmit('\n');
+
+    if (strcmp(tempBuffer, "RUN") == 0) {
+        uart_transmit_string(PSTR("Jumping to RTOS...\n"));
+        jump_to_rtos();
+    } else if (strncmp(tempBuffer, "TASK:", 5) == 0) {
         uint16_t dataSize = index - 5;
         if (dataSize > 0) {
+            uart_transmit_string(PSTR("Storing task...\n"));
             process_task(&buffer[5], dataSize);
         } else {
             uart_transmit_string(PSTR("Empty TASK payload\n"));
@@ -161,6 +210,8 @@ void read_packet() {
     } else {
         uart_transmit_string(PSTR("Unknown command\n"));
     }
+
+    while (UCSR0A & (1 << RXC0)) (void)UDR0;
 }
 
 int main(void) {
