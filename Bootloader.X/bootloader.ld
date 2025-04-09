@@ -2,37 +2,34 @@
 MEMORY
 {
   text (rx)  : ORIGIN = 0x7000, LENGTH = 0x0800  /* 2 KB Bootloader region */
-  data  (rw!x): ORIGIN = 0x0100, LENGTH = 0x0200  /* 512 bytes SRAM */
+  data  (rw!x): ORIGIN = 0x0100, LENGTH = 0x02FF  /* 512 bytes SRAM */
+  eeprom (rw)  : ORIGIN = 0x0000, LENGTH = 0x0400   /* EEPROM 1KB */
 }
 
 ENTRY(_start)
 
 SECTIONS
 {
-  .vectors 0x7000 :
-  {
-    KEEP(*(.init0))  /* now _start() is safely the reset vector */
-    KEEP(*(.vectors))  /* add if needed, but no default jmp */
-  } > text
-
   .text :
   {
-    *(.text)         /* Main code */
-    *(.text*)        /* Subfunctions */
-    *(.rodata*)      /* Constants */
+    *(.init0) 
+    *(.init*) 
+    *(.text*) 
+    *(.rodata*)
   } > text
 
-  .data :
-  {
+  .data : {
     *(.data)
     *(.data*)
   } > data
 
-  .bss (NOLOAD) :
-  {
-    __bss_start = .;
+  .bss : {
+    *(.bss)
     *(.bss*)
-    *(COMMON)
-    __bss_end = .;
+  } > data
+
+  .noinit (NOLOAD) : {
+    *(.noinit)
+    *(.noinit*)
   } > data
 }

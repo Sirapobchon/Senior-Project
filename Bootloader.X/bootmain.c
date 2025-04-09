@@ -26,15 +26,34 @@ void _start(void) {
 #define FLASH_TASK_START  0x2800
 #define FLASH_TASK_LIMIT  0x7000
 #define SPM_PAGESIZE      128
- #define PACKET_TIMEOUT_MS 1000
+#define EEPROM_ADDR_FLASH_PTR 0x00
 
-uint32_t currentFlashAddress;
+__attribute__((section(".noinit")))
+static uint16_t currentFlashAddress;
+
+uint32_t read_flash_ptr_from_eeprom() {
+    uint32_t addr = 0;
+    addr |= eeprom_read_byte((uint8_t*)(EEPROM_ADDR_FLASH_PTR + 0));
+    addr |= ((uint32_t)eeprom_read_byte((uint8_t*)(EEPROM_ADDR_FLASH_PTR + 1))) << 8;
+    addr |= ((uint32_t)eeprom_read_byte((uint8_t*)(EEPROM_ADDR_FLASH_PTR + 2))) << 16;
+    addr |= ((uint32_t)eeprom_read_byte((uint8_t*)(EEPROM_ADDR_FLASH_PTR + 3))) << 24;
+    return addr;
+}
+
+void write_flash_ptr_to_eeprom(uint32_t addr) {
+    eeprom_busy_wait();
+    eeprom_update_byte((uint8_t*)(EEPROM_ADDR_FLASH_PTR + 0), addr & 0xFF);
+    eeprom_update_byte((uint8_t*)(EEPROM_ADDR_FLASH_PTR + 1), (addr >> 8) & 0xFF);
+    eeprom_update_byte((uint8_t*)(EEPROM_ADDR_FLASH_PTR + 2), (addr >> 16) & 0xFF);
+    eeprom_update_byte((uint8_t*)(EEPROM_ADDR_FLASH_PTR + 3), (addr >> 24) & 0xFF);
+}
 
 void uart_init() {
     UBRR0H = (unsigned char)(UBRR_VALUE >> 8);
     UBRR0L = (unsigned char)(UBRR_VALUE);
     UCSR0B = (1 << RXEN0) | (1 << TXEN0); // Enable RX and TX
     UCSR0C = (1 << UCSZ01) | (1 << UCSZ00); // 8-bit data
+    while (UCSR0A & (1 << RXC0)) (void)UDR0;
 }
 
 void uart_transmit(uint8_t data) {
@@ -55,12 +74,20 @@ void uart_transmit_string_R(const char *str) {
     }
 }
 
-uint8_t uart_receive() {
+void uart_transmit_hex(uint8_t value) {
+    char hex[3];
+    hex[0] = "0123456789ABCDEF"[value >> 4];  // Extract high nibble
+    hex[1] = "0123456789ABCDEF"[value & 0x0F]; // Extract low nibble
+    hex[2] = '\0';  // Null terminator
+    uart_transmit_string_R(hex);
+}
+
+unsigned char uart_receive() {
     while (!(UCSR0A & (1 << RXC0)));
     return UDR0;
 }
 
-uint8_t uart_receive_timeout(uint16_t timeout_ms) {
+unsigned char uart_receive_timeout(uint16_t timeout_ms) {
     uint16_t count = 0;
     while (!(UCSR0A & (1 << RXC0))) {
         _delay_ms(1);
@@ -106,26 +133,25 @@ void write_flash_page(uint32_t pageAddr, uint8_t *data) {
 void process_task(uint8_t *data, uint16_t size) {
     uint32_t addr = currentFlashAddress;
     while (size > 0) {
-        uint8_t buffer[SPM_PAGESIZE];
+        if ((addr + SPM_PAGESIZE) >= FLASH_TASK_LIMIT) break;
+        
+        static char buffer[SPM_PAGESIZE + 16];  // Give extra room for <TASK:>
         uint16_t chunk = (size > SPM_PAGESIZE) ? SPM_PAGESIZE : size;
 
         memset(buffer, 0xFF, SPM_PAGESIZE);
         memcpy(buffer, data, chunk);
 
-        write_flash_page(addr, buffer);
+        write_flash_page(addr, (uint8_t *)buffer);
 
         addr += SPM_PAGESIZE;
         data += chunk;
         size -= chunk;
     }
 
-    send_flash_address(currentFlashAddress);
+    send_flash_address(addr - SPM_PAGESIZE);
     currentFlashAddress = addr;
-}
+    write_flash_ptr_to_eeprom(currentFlashAddress);
 
-void blink_light(void){
-    PORTB ^= (1 << PB1);
-    _delay_ms(200);
 }
 
 void read_packet() {
@@ -135,90 +161,98 @@ void read_packet() {
     uint8_t b;
 
     uart_transmit_string(PSTR("<TASK> or <RUN>\n"));
+    // uart_transmit_string(PSTR("Waiting for '<'...\n"));
+
+    // Flush UART
     while (UCSR0A & (1 << RXC0)) (void)UDR0;
 
-    // ? First: wait for '<'
-    uart_transmit_string(PSTR("Waiting for '<'...\n"));
+    // Wait for '<' with non-blocking LED blink
+    uint16_t blinkTimer = 0;
     while (1) {
         b = uart_receive_timeout(10);
-        if (b == 0xFF) continue;
         if (b == START_MARKER) break;
-        blink_light();
+        if (b == 0xFF) {
+            blinkTimer += 10;
+            if (blinkTimer >= 500) {
+                PORTB ^= (1 << PB1);  // Blink
+                blinkTimer = 0;
+            }
+            continue;
+        }
     }
+    PORTB &= ~(1 << PB1); // LED OFF
 
-    // ? THEN this extra read loop was accidentally included
-    // Read AFTER '<' but before we start processing again ? this caused issues!
-    index = 0;
-    while (index < sizeof(buffer) - 1) {
-        b = uart_receive(); // blocking
-        if (b == END_MARKER) break;
-
-        buffer[index++] = b;
-        uart_transmit('[');
-        uart_transmit(b);
-        uart_transmit(']');
-    }
-
-    // ? BUT ? second read loop was still there too!
+    // Read until '>'
     index = 0;
     while (index < sizeof(buffer) - 1) {
         b = uart_receive_timeout(200);
-        if (b == 0xFF || b == END_MARKER) break;
-
+        if (b == 0xFF) continue;
+        if (b == END_MARKER) break;
         buffer[index++] = b;
-        uart_transmit('[');
-        uart_transmit(b);
-        uart_transmit(']');
-    }
 
-    PORTB &= ~(1 << PB1); // LED off
+        // Optional debug
+        // uart_transmit('['); uart_transmit(b); uart_transmit(']');
+    }
     buffer[index] = '\0';
 
-    while (index > 0 && (buffer[index - 1] == '\r' || buffer[index - 1] == '\n'))
+    // Strip trailing \r or \n
+    while (index > 0 && (buffer[index - 1] == '\r' || buffer[index - 1] == '\n')) {
         buffer[--index] = '\0';
+    }
 
+    // Copy to tempBuffer safely
     uint8_t copyLen = (index < sizeof(tempBuffer) - 1) ? index : sizeof(tempBuffer) - 1;
-    for (uint8_t i = 0; i < copyLen; ++i)
-        tempBuffer[i] = buffer[i];
+    for (uint8_t i = 0; i < copyLen; ++i) tempBuffer[i] = buffer[i];
     tempBuffer[copyLen] = '\0';
 
+    // Debug: ASCII summary
+    /*
     uart_transmit_string(PSTR("CMD: "));
-    if (tempBuffer[0]) uart_transmit_string_R(tempBuffer);
-    else uart_transmit_string(PSTR("(empty)"));
+    uart_transmit_string_R(tempBuffer[0] ? tempBuffer : "(empty)");
     uart_transmit('\n');
 
-    uart_transmit_string(PSTR("HEX: "));
+    uart_transmit_string(PSTR("BYTES: "));
     for (uint8_t i = 0; i < copyLen; ++i) {
         uart_transmit('[');
-        uart_transmit("0123456789ABCDEF"[(tempBuffer[i] >> 4) & 0xF]);
-        uart_transmit("0123456789ABCDEF"[tempBuffer[i] & 0xF]);
+        uart_transmit("0123456789ABCDEF"[(uint8_t)tempBuffer[i] >> 4]);
+        uart_transmit("0123456789ABCDEF"[tempBuffer[i] & 0x0F]);
         uart_transmit(']');
     }
     uart_transmit('\n');
+     */
 
-    if (strcmp(tempBuffer, "RUN") == 0) {
+    // === Actual command handling ===
+    if (copyLen == 3 && tempBuffer[0] == 'R' && tempBuffer[1] == 'U' && tempBuffer[2] == 'N') {
         uart_transmit_string(PSTR("Jumping to RTOS...\n"));
         jump_to_rtos();
-    } else if (strncmp(tempBuffer, "TASK:", 5) == 0) {
+    } else if (copyLen > 5 && strncmp(tempBuffer, "TASK:", 5) == 0) {
         uint16_t dataSize = index - 5;
-        if (dataSize > 0) {
-            uart_transmit_string(PSTR("Storing task...\n"));
-            process_task(&buffer[5], dataSize);
-        } else {
-            uart_transmit_string(PSTR("Empty TASK payload\n"));
-        }
+        uart_transmit_string(PSTR("Storing task...\n"));
+        process_task((uint8_t *)&buffer[5], dataSize);
     } else {
         uart_transmit_string(PSTR("Unknown command\n"));
     }
 
+    // Final cleanup
     while (UCSR0A & (1 << RXC0)) (void)UDR0;
 }
 
 int main(void) {
-    DDRB |= (1 << PB1);// Arduino UNO LED pin
-    PORTB |= (1 << PB1);// Turn LED on
-
+    //DDRD &= ~(1 << PD0);   // RXD as input
+    //PORTD |= (1 << PD0);   // Enable pull-up on RXD
+    
     uart_init();
+    
+    /*currentFlashAddress = read_flash_ptr_from_eeprom();
+    if (currentFlashAddress < FLASH_TASK_START || currentFlashAddress >= FLASH_TASK_LIMIT) {
+        currentFlashAddress = FLASH_TASK_START;
+    }*/
+    
+    DDRB |= (1 << PB1);// Arduino UNO LED pin
+    PORTB ^= (1 << PB1);// Turn LED on
+
+
+    _delay_ms(10);
     
     uart_transmit_string(PSTR("Bootloader Ready\n"));
 
