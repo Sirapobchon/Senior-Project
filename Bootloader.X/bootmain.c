@@ -1,8 +1,3 @@
-__attribute__((naked, section(".init0"), used))
-void _start(void) {
-    asm volatile ("jmp main");
-}
-
 /*
  * File:   bootmain.c
  * Author: Sirapob-ASUSTUF
@@ -16,10 +11,11 @@ void _start(void) {
 #include <avr/interrupt.h>
 #include <util/delay.h>
 #include <string.h>
+#include <avr/wdt.h>
 
 #define BAUD 9600
 #define UBRR_VALUE 51
-
+#define EEPROM_BOOT_COUNTER_ADDR 0x10
 #define START_MARKER '<'
 #define END_MARKER   '>'
 
@@ -237,26 +233,81 @@ void read_packet() {
     while (UCSR0A & (1 << RXC0)) (void)UDR0;
 }
 
-int main(void) {
-    //DDRD &= ~(1 << PD0);   // RXD as input
-    //PORTD |= (1 << PD0);   // Enable pull-up on RXD
+// Dummy read_packet
+void tempread_packet() {
+    uart_transmit_string("<WAITING COMMAND>\n");
+    while (1);
+}
+
+void clear_bss() {
+    extern uint8_t __bss_start;
+    extern uint8_t __bss_end;
+    for (uint8_t* ptr = &__bss_start; ptr < &__bss_end; ++ptr) {
+        *ptr = 0;
+    }
+}
+
+__attribute__((naked, section(".init0"), used))
+void _start(void) {
+    cli();             // disable interrupts
+    MCUSR = 0;         // clear any reset flags
+    wdt_reset();       // clear watchdog
+    wdt_disable();     // stop watchdog
+
+    // Set up stack pointer manually
+    asm volatile (
+        "ldi r28, lo8(0x8FF)\n\t"
+        "ldi r29, hi8(0x8FF)\n\t"
+        "out __SP_L__, r28\n\t"
+        "out __SP_H__, r29\n\t"
+    );
+
+    DDRD |= (1 << PD1);  // TXD as output
+    PORTD |= (1 << PD1); // Set high to idle state
     
     uart_init();
+    uart_transmit_string("_start reached\n");
+
+    for (volatile uint32_t i = 0; i < 50000UL; ++i);
+
+    asm volatile("jmp main");
+}
+
+int main(void) {
+
+    uint16_t sp;
+    asm volatile("in %A0, __SP_L__ \n\t"
+                 "in %B0, __SP_H__"
+                 : "=r" (sp));
+    uart_transmit_string("SP: ");
+    uart_transmit_hex(sp >> 8);
+    uart_transmit_hex(sp & 0xFF);
+    uart_transmit('\n');
+
+    clear_bss(); // Test 4: Manually zero .bss
+
+    // Test 1: Increment cold boot counter
+    uint8_t boot_count = eeprom_read_byte((uint8_t*)EEPROM_BOOT_COUNTER_ADDR);
+    eeprom_update_byte((uint8_t*)EEPROM_BOOT_COUNTER_ADDR, boot_count + 1);
     
     /*currentFlashAddress = read_flash_ptr_from_eeprom();
     if (currentFlashAddress < FLASH_TASK_START || currentFlashAddress >= FLASH_TASK_LIMIT) {
         currentFlashAddress = FLASH_TASK_START;
     }*/
     
+    uart_transmit_string("Boot count: ");
+    uart_transmit_hex(boot_count);
+    uart_transmit('\n');
+    
     DDRB |= (1 << PB1);// Arduino UNO LED pin
-    PORTB ^= (1 << PB1);// Turn LED on
-
-
-    _delay_ms(10);
+    for (int i = 0; i < 5; i++) {
+        PORTB ^= (1 << PB1);
+        _delay_ms(200);
+    }
     
     uart_transmit_string(PSTR("Bootloader Ready\n"));
-
+    
     while (1) {
-        read_packet(); // <-- This is now referenced!
+        tempread_packet(); 
     }
 }

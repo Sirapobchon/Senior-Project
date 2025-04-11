@@ -23,9 +23,12 @@ SECTIONS
     *(.data*)
   } > data
 
-  .bss : {
+  .bss :
+  {
+    PROVIDE(__bss_start = .);
     *(.bss)
     *(.bss*)
+    PROVIDE(__bss_end = .);
   } > data
 
   .noinit (NOLOAD) : {

@@ -22,7 +22,8 @@ build/default/production/bootmain.o.d build/default/production/bootmain.o: \
  c:\program\ files\microchip\xc8\v2.50\avr\avr\include\util\delay.h \
  c:\program\ files\microchip\xc8\v2.50\avr\avr\include\util\delay_basic.h \
  c:\program\ files\microchip\xc8\v2.50\avr\avr\include\math.h \
- c:\program\ files\microchip\xc8\v2.50\avr\avr\include\string.h
+ c:\program\ files\microchip\xc8\v2.50\avr\avr\include\string.h \
+ c:\program\ files\microchip\xc8\v2.50\avr\avr\include\avr\wdt.h
 
 c:\program\ files\microchip\xc8\v2.50\avr\avr\include\avr\io.h:
 
@@ -69,3 +70,5 @@ c:\program\ files\microchip\xc8\v2.50\avr\avr\include\util\delay_basic.h:
 c:\program\ files\microchip\xc8\v2.50\avr\avr\include\math.h:
 
 c:\program\ files\microchip\xc8\v2.50\avr\avr\include\string.h:
+
+c:\program\ files\microchip\xc8\v2.50\avr\avr\include\avr\wdt.h:
