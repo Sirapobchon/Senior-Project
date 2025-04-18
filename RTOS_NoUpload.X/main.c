@@ -28,6 +28,12 @@ void uart_transmit_string(const char *str);
 void uart_transmit_number(uint16_t num);
 void vUARTMonitor(void *pvParameters);
 
+// Declare tasks from .c files
+void vBlinkTask(void *pvParameters);
+void vPWMTask(void *pvParameters);
+void vNumpadTask(void *pvParameters);
+// Just make sure they're added to the project as source files.
+
 // FreeRTOS Application Idle Hook
 void vApplicationIdleHook(void) {
     // Idle Hook (Optional)
@@ -47,9 +53,9 @@ portSHORT main(void) {
     uart_transmit_string("RTOS is running...\n");
 
     // Create a task for receiving new task files over UART
-    //xTaskCreate(, "BlinkTask", 192, NULL, 1, NULL);
-    //xTaskCreate(, "PWMTask", 192, NULL, 1, NULL);
-    //xTaskCreate(, "NumpadTask", 192, NULL, 1, NULL);
+    xTaskCreate(vBlinkTask, "BlinkTask", 128, NULL, 1, NULL);
+    xTaskCreate(vPWMTask, "PWMTask", 128, NULL, 1, NULL);
+    xTaskCreate(vNumpadTask, "NumpadTask", 192, NULL, 1, NULL);
     xTaskCreate(vUARTMonitor, "UARTMonitor", 192, NULL, 1, NULL);
     
     // Start RTOS Scheduler
@@ -117,17 +123,13 @@ void uart_transmit_number(uint16_t num) {
 
 void vUARTMonitor(void *pvParameters) {
     (void)pvParameters;
-    uart_transmit_string("[UART Monitor Started]\n");
+    uart_transmit_string("\n[UART Monitor Started]\n");
 
     while (1) {
         if (UCSR0A & (1 << RXC0)) { // Check if data received
             char received = UDR0;
-            uart_transmit_string("Received: ");
             uart_transmit(received);
-            uart_transmit('\n');
         }
-
-        vTaskDelay(pdMS_TO_TICKS(50)); // Poll every 50ms
     }
 }
 
