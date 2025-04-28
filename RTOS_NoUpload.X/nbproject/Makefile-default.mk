@@ -51,17 +51,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=main.c FreeRTOS/croutine.c FreeRTOS/event_groups.c FreeRTOS/list.c FreeRTOS/queue.c FreeRTOS/tasks.c FreeRTOS/timers.c FreeRTOS/portable/GCC/ATMega328/port.c FreeRTOS/portable/MemMang/heap_4.c Task/blink.c Task/numpad.c Task/pwm.c
+SOURCEFILES_QUOTED_IF_SPACED=Task/blink.c Task/numpad.c Task/pwm.c main.c FreeRTOS/croutine.c FreeRTOS/event_groups.c FreeRTOS/list.c FreeRTOS/queue.c FreeRTOS/tasks.c FreeRTOS/timers.c FreeRTOS/portable/GCC/ATMega328/port.c FreeRTOS/portable/MemMang/heap_4.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/main.o ${OBJECTDIR}/FreeRTOS/croutine.o ${OBJECTDIR}/FreeRTOS/event_groups.o ${OBJECTDIR}/FreeRTOS/list.o ${OBJECTDIR}/FreeRTOS/queue.o ${OBJECTDIR}/FreeRTOS/tasks.o ${OBJECTDIR}/FreeRTOS/timers.o ${OBJECTDIR}/FreeRTOS/portable/GCC/ATMega328/port.o ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o ${OBJECTDIR}/Task/blink.o ${OBJECTDIR}/Task/numpad.o ${OBJECTDIR}/Task/pwm.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/main.o.d ${OBJECTDIR}/FreeRTOS/croutine.o.d ${OBJECTDIR}/FreeRTOS/event_groups.o.d ${OBJECTDIR}/FreeRTOS/list.o.d ${OBJECTDIR}/FreeRTOS/queue.o.d ${OBJECTDIR}/FreeRTOS/tasks.o.d ${OBJECTDIR}/FreeRTOS/timers.o.d ${OBJECTDIR}/FreeRTOS/portable/GCC/ATMega328/port.o.d ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o.d ${OBJECTDIR}/Task/blink.o.d ${OBJECTDIR}/Task/numpad.o.d ${OBJECTDIR}/Task/pwm.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/Task/blink.o ${OBJECTDIR}/Task/numpad.o ${OBJECTDIR}/Task/pwm.o ${OBJECTDIR}/main.o ${OBJECTDIR}/FreeRTOS/croutine.o ${OBJECTDIR}/FreeRTOS/event_groups.o ${OBJECTDIR}/FreeRTOS/list.o ${OBJECTDIR}/FreeRTOS/queue.o ${OBJECTDIR}/FreeRTOS/tasks.o ${OBJECTDIR}/FreeRTOS/timers.o ${OBJECTDIR}/FreeRTOS/portable/GCC/ATMega328/port.o ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/Task/blink.o.d ${OBJECTDIR}/Task/numpad.o.d ${OBJECTDIR}/Task/pwm.o.d ${OBJECTDIR}/main.o.d ${OBJECTDIR}/FreeRTOS/croutine.o.d ${OBJECTDIR}/FreeRTOS/event_groups.o.d ${OBJECTDIR}/FreeRTOS/list.o.d ${OBJECTDIR}/FreeRTOS/queue.o.d ${OBJECTDIR}/FreeRTOS/tasks.o.d ${OBJECTDIR}/FreeRTOS/timers.o.d ${OBJECTDIR}/FreeRTOS/portable/GCC/ATMega328/port.o.d ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/main.o ${OBJECTDIR}/FreeRTOS/croutine.o ${OBJECTDIR}/FreeRTOS/event_groups.o ${OBJECTDIR}/FreeRTOS/list.o ${OBJECTDIR}/FreeRTOS/queue.o ${OBJECTDIR}/FreeRTOS/tasks.o ${OBJECTDIR}/FreeRTOS/timers.o ${OBJECTDIR}/FreeRTOS/portable/GCC/ATMega328/port.o ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o ${OBJECTDIR}/Task/blink.o ${OBJECTDIR}/Task/numpad.o ${OBJECTDIR}/Task/pwm.o
+OBJECTFILES=${OBJECTDIR}/Task/blink.o ${OBJECTDIR}/Task/numpad.o ${OBJECTDIR}/Task/pwm.o ${OBJECTDIR}/main.o ${OBJECTDIR}/FreeRTOS/croutine.o ${OBJECTDIR}/FreeRTOS/event_groups.o ${OBJECTDIR}/FreeRTOS/list.o ${OBJECTDIR}/FreeRTOS/queue.o ${OBJECTDIR}/FreeRTOS/tasks.o ${OBJECTDIR}/FreeRTOS/timers.o ${OBJECTDIR}/FreeRTOS/portable/GCC/ATMega328/port.o ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o
 
 # Source Files
-SOURCEFILES=main.c FreeRTOS/croutine.c FreeRTOS/event_groups.c FreeRTOS/list.c FreeRTOS/queue.c FreeRTOS/tasks.c FreeRTOS/timers.c FreeRTOS/portable/GCC/ATMega328/port.c FreeRTOS/portable/MemMang/heap_4.c Task/blink.c Task/numpad.c Task/pwm.c
+SOURCEFILES=Task/blink.c Task/numpad.c Task/pwm.c main.c FreeRTOS/croutine.c FreeRTOS/event_groups.c FreeRTOS/list.c FreeRTOS/queue.c FreeRTOS/tasks.c FreeRTOS/timers.c FreeRTOS/portable/GCC/ATMega328/port.c FreeRTOS/portable/MemMang/heap_4.c
 
 
 
@@ -100,14 +100,32 @@ ifneq ($(INFORMATION_MESSAGE), )
 endif
 	${MAKE}  -f nbproject/Makefile-default.mk ${DISTDIR}/RTOS_NoUpload.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
 	@echo "--------------------------------------"
-	@echo "User defined post-build step: [call post_build.bat ]"
-	@call post_build.bat 
+	@echo "User defined post-build step: [call post_build_noup.bat ]"
+	@call post_build_noup.bat 
 	@echo "--------------------------------------"
 
 MP_PROCESSOR_OPTION=ATmega328P
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: compile
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
+${OBJECTDIR}/Task/blink.o: Task/blink.c  .generated_files/flags/default/7a63fa4a6a53048f58b84bbeb660a292877f827c .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/Task" 
+	@${RM} ${OBJECTDIR}/Task/blink.o.d 
+	@${RM} ${OBJECTDIR}/Task/blink.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1 -g -DDEBUG  -gdwarf-2  -x c -D__$(MP_PROCESSOR_OPTION)__   -mdfp="${DFP_DIR}/xc8"  -Wl,--gc-sections -O1 -ffunction-sections -fdata-sections -fshort-enums -fno-common -funsigned-char -funsigned-bitfields -Wall -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD)  -gdwarf-3 -mno-const-data-in-progmem -I./FreeRTOS -I./FreeRTOS/include -I./FreeRTOS/portable/GCC/ATMega328      -MD -MP -MF "${OBJECTDIR}/Task/blink.o.d" -MT "${OBJECTDIR}/Task/blink.o.d" -MT ${OBJECTDIR}/Task/blink.o -o ${OBJECTDIR}/Task/blink.o Task/blink.c 
+	
+${OBJECTDIR}/Task/numpad.o: Task/numpad.c  .generated_files/flags/default/6b579b3d09ffd2aecc2bb3d9b7936d61bc5b28a6 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/Task" 
+	@${RM} ${OBJECTDIR}/Task/numpad.o.d 
+	@${RM} ${OBJECTDIR}/Task/numpad.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1 -g -DDEBUG  -gdwarf-2  -x c -D__$(MP_PROCESSOR_OPTION)__   -mdfp="${DFP_DIR}/xc8"  -Wl,--gc-sections -O1 -ffunction-sections -fdata-sections -fshort-enums -fno-common -funsigned-char -funsigned-bitfields -Wall -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD)  -gdwarf-3 -mno-const-data-in-progmem -I./FreeRTOS -I./FreeRTOS/include -I./FreeRTOS/portable/GCC/ATMega328      -MD -MP -MF "${OBJECTDIR}/Task/numpad.o.d" -MT "${OBJECTDIR}/Task/numpad.o.d" -MT ${OBJECTDIR}/Task/numpad.o -o ${OBJECTDIR}/Task/numpad.o Task/numpad.c 
+	
+${OBJECTDIR}/Task/pwm.o: Task/pwm.c  .generated_files/flags/default/502b064584d1585f16ebd4acd3197a0f45a1310 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}/Task" 
+	@${RM} ${OBJECTDIR}/Task/pwm.o.d 
+	@${RM} ${OBJECTDIR}/Task/pwm.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1 -g -DDEBUG  -gdwarf-2  -x c -D__$(MP_PROCESSOR_OPTION)__   -mdfp="${DFP_DIR}/xc8"  -Wl,--gc-sections -O1 -ffunction-sections -fdata-sections -fshort-enums -fno-common -funsigned-char -funsigned-bitfields -Wall -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD)  -gdwarf-3 -mno-const-data-in-progmem -I./FreeRTOS -I./FreeRTOS/include -I./FreeRTOS/portable/GCC/ATMega328      -MD -MP -MF "${OBJECTDIR}/Task/pwm.o.d" -MT "${OBJECTDIR}/Task/pwm.o.d" -MT ${OBJECTDIR}/Task/pwm.o -o ${OBJECTDIR}/Task/pwm.o Task/pwm.c 
+	
 ${OBJECTDIR}/main.o: main.c  .generated_files/flags/default/1bbbcc39009d73503e5318d6c61d54990c255c0d .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/main.o.d 
@@ -162,25 +180,25 @@ ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o: FreeRTOS/portable/MemMang/heap_
 	@${RM} ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1 -g -DDEBUG  -gdwarf-2  -x c -D__$(MP_PROCESSOR_OPTION)__   -mdfp="${DFP_DIR}/xc8"  -Wl,--gc-sections -O1 -ffunction-sections -fdata-sections -fshort-enums -fno-common -funsigned-char -funsigned-bitfields -Wall -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD)  -gdwarf-3 -mno-const-data-in-progmem -I./FreeRTOS -I./FreeRTOS/include -I./FreeRTOS/portable/GCC/ATMega328      -MD -MP -MF "${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o.d" -MT "${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o.d" -MT ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o -o ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o FreeRTOS/portable/MemMang/heap_4.c 
 	
-${OBJECTDIR}/Task/blink.o: Task/blink.c  .generated_files/flags/default/7a63fa4a6a53048f58b84bbeb660a292877f827c .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+else
+${OBJECTDIR}/Task/blink.o: Task/blink.c  .generated_files/flags/default/8cd53c84d1bc823e0bb6f0be0c984aa9275c2198 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/Task" 
 	@${RM} ${OBJECTDIR}/Task/blink.o.d 
 	@${RM} ${OBJECTDIR}/Task/blink.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1 -g -DDEBUG  -gdwarf-2  -x c -D__$(MP_PROCESSOR_OPTION)__   -mdfp="${DFP_DIR}/xc8"  -Wl,--gc-sections -O1 -ffunction-sections -fdata-sections -fshort-enums -fno-common -funsigned-char -funsigned-bitfields -Wall -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD)  -gdwarf-3 -mno-const-data-in-progmem -I./FreeRTOS -I./FreeRTOS/include -I./FreeRTOS/portable/GCC/ATMega328      -MD -MP -MF "${OBJECTDIR}/Task/blink.o.d" -MT "${OBJECTDIR}/Task/blink.o.d" -MT ${OBJECTDIR}/Task/blink.o -o ${OBJECTDIR}/Task/blink.o Task/blink.c 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -x c -D__$(MP_PROCESSOR_OPTION)__   -mdfp="${DFP_DIR}/xc8"  -Wl,--gc-sections -O1 -ffunction-sections -fdata-sections -fshort-enums -fno-common -funsigned-char -funsigned-bitfields -Wall -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD)  -gdwarf-3 -mno-const-data-in-progmem -I./FreeRTOS -I./FreeRTOS/include -I./FreeRTOS/portable/GCC/ATMega328      -MD -MP -MF "${OBJECTDIR}/Task/blink.o.d" -MT "${OBJECTDIR}/Task/blink.o.d" -MT ${OBJECTDIR}/Task/blink.o -o ${OBJECTDIR}/Task/blink.o Task/blink.c 
 	
-${OBJECTDIR}/Task/numpad.o: Task/numpad.c  .generated_files/flags/default/6b579b3d09ffd2aecc2bb3d9b7936d61bc5b28a6 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/Task/numpad.o: Task/numpad.c  .generated_files/flags/default/8e8cb074a56f63f00de32ab2efef976e780537f6 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/Task" 
 	@${RM} ${OBJECTDIR}/Task/numpad.o.d 
 	@${RM} ${OBJECTDIR}/Task/numpad.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1 -g -DDEBUG  -gdwarf-2  -x c -D__$(MP_PROCESSOR_OPTION)__   -mdfp="${DFP_DIR}/xc8"  -Wl,--gc-sections -O1 -ffunction-sections -fdata-sections -fshort-enums -fno-common -funsigned-char -funsigned-bitfields -Wall -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD)  -gdwarf-3 -mno-const-data-in-progmem -I./FreeRTOS -I./FreeRTOS/include -I./FreeRTOS/portable/GCC/ATMega328      -MD -MP -MF "${OBJECTDIR}/Task/numpad.o.d" -MT "${OBJECTDIR}/Task/numpad.o.d" -MT ${OBJECTDIR}/Task/numpad.o -o ${OBJECTDIR}/Task/numpad.o Task/numpad.c 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -x c -D__$(MP_PROCESSOR_OPTION)__   -mdfp="${DFP_DIR}/xc8"  -Wl,--gc-sections -O1 -ffunction-sections -fdata-sections -fshort-enums -fno-common -funsigned-char -funsigned-bitfields -Wall -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD)  -gdwarf-3 -mno-const-data-in-progmem -I./FreeRTOS -I./FreeRTOS/include -I./FreeRTOS/portable/GCC/ATMega328      -MD -MP -MF "${OBJECTDIR}/Task/numpad.o.d" -MT "${OBJECTDIR}/Task/numpad.o.d" -MT ${OBJECTDIR}/Task/numpad.o -o ${OBJECTDIR}/Task/numpad.o Task/numpad.c 
 	
-${OBJECTDIR}/Task/pwm.o: Task/pwm.c  .generated_files/flags/default/502b064584d1585f16ebd4acd3197a0f45a1310 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+${OBJECTDIR}/Task/pwm.o: Task/pwm.c  .generated_files/flags/default/2666b0c2f01dcb6097e763aaac650ffc43e8cb61 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}/Task" 
 	@${RM} ${OBJECTDIR}/Task/pwm.o.d 
 	@${RM} ${OBJECTDIR}/Task/pwm.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1 -g -DDEBUG  -gdwarf-2  -x c -D__$(MP_PROCESSOR_OPTION)__   -mdfp="${DFP_DIR}/xc8"  -Wl,--gc-sections -O1 -ffunction-sections -fdata-sections -fshort-enums -fno-common -funsigned-char -funsigned-bitfields -Wall -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD)  -gdwarf-3 -mno-const-data-in-progmem -I./FreeRTOS -I./FreeRTOS/include -I./FreeRTOS/portable/GCC/ATMega328      -MD -MP -MF "${OBJECTDIR}/Task/pwm.o.d" -MT "${OBJECTDIR}/Task/pwm.o.d" -MT ${OBJECTDIR}/Task/pwm.o -o ${OBJECTDIR}/Task/pwm.o Task/pwm.c 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -x c -D__$(MP_PROCESSOR_OPTION)__   -mdfp="${DFP_DIR}/xc8"  -Wl,--gc-sections -O1 -ffunction-sections -fdata-sections -fshort-enums -fno-common -funsigned-char -funsigned-bitfields -Wall -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD)  -gdwarf-3 -mno-const-data-in-progmem -I./FreeRTOS -I./FreeRTOS/include -I./FreeRTOS/portable/GCC/ATMega328      -MD -MP -MF "${OBJECTDIR}/Task/pwm.o.d" -MT "${OBJECTDIR}/Task/pwm.o.d" -MT ${OBJECTDIR}/Task/pwm.o -o ${OBJECTDIR}/Task/pwm.o Task/pwm.c 
 	
-else
 ${OBJECTDIR}/main.o: main.c  .generated_files/flags/default/981da9cf9f7a3e303ef1b340dca8a87e15d6e18c .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/main.o.d 
@@ -234,24 +252,6 @@ ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o: FreeRTOS/portable/MemMang/heap_
 	@${RM} ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o.d 
 	@${RM} ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -x c -D__$(MP_PROCESSOR_OPTION)__   -mdfp="${DFP_DIR}/xc8"  -Wl,--gc-sections -O1 -ffunction-sections -fdata-sections -fshort-enums -fno-common -funsigned-char -funsigned-bitfields -Wall -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD)  -gdwarf-3 -mno-const-data-in-progmem -I./FreeRTOS -I./FreeRTOS/include -I./FreeRTOS/portable/GCC/ATMega328      -MD -MP -MF "${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o.d" -MT "${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o.d" -MT ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o -o ${OBJECTDIR}/FreeRTOS/portable/MemMang/heap_4.o FreeRTOS/portable/MemMang/heap_4.c 
-	
-${OBJECTDIR}/Task/blink.o: Task/blink.c  .generated_files/flags/default/8cd53c84d1bc823e0bb6f0be0c984aa9275c2198 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
-	@${MKDIR} "${OBJECTDIR}/Task" 
-	@${RM} ${OBJECTDIR}/Task/blink.o.d 
-	@${RM} ${OBJECTDIR}/Task/blink.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -x c -D__$(MP_PROCESSOR_OPTION)__   -mdfp="${DFP_DIR}/xc8"  -Wl,--gc-sections -O1 -ffunction-sections -fdata-sections -fshort-enums -fno-common -funsigned-char -funsigned-bitfields -Wall -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD)  -gdwarf-3 -mno-const-data-in-progmem -I./FreeRTOS -I./FreeRTOS/include -I./FreeRTOS/portable/GCC/ATMega328      -MD -MP -MF "${OBJECTDIR}/Task/blink.o.d" -MT "${OBJECTDIR}/Task/blink.o.d" -MT ${OBJECTDIR}/Task/blink.o -o ${OBJECTDIR}/Task/blink.o Task/blink.c 
-	
-${OBJECTDIR}/Task/numpad.o: Task/numpad.c  .generated_files/flags/default/8e8cb074a56f63f00de32ab2efef976e780537f6 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
-	@${MKDIR} "${OBJECTDIR}/Task" 
-	@${RM} ${OBJECTDIR}/Task/numpad.o.d 
-	@${RM} ${OBJECTDIR}/Task/numpad.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -x c -D__$(MP_PROCESSOR_OPTION)__   -mdfp="${DFP_DIR}/xc8"  -Wl,--gc-sections -O1 -ffunction-sections -fdata-sections -fshort-enums -fno-common -funsigned-char -funsigned-bitfields -Wall -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD)  -gdwarf-3 -mno-const-data-in-progmem -I./FreeRTOS -I./FreeRTOS/include -I./FreeRTOS/portable/GCC/ATMega328      -MD -MP -MF "${OBJECTDIR}/Task/numpad.o.d" -MT "${OBJECTDIR}/Task/numpad.o.d" -MT ${OBJECTDIR}/Task/numpad.o -o ${OBJECTDIR}/Task/numpad.o Task/numpad.c 
-	
-${OBJECTDIR}/Task/pwm.o: Task/pwm.c  .generated_files/flags/default/2666b0c2f01dcb6097e763aaac650ffc43e8cb61 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
-	@${MKDIR} "${OBJECTDIR}/Task" 
-	@${RM} ${OBJECTDIR}/Task/pwm.o.d 
-	@${RM} ${OBJECTDIR}/Task/pwm.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -x c -D__$(MP_PROCESSOR_OPTION)__   -mdfp="${DFP_DIR}/xc8"  -Wl,--gc-sections -O1 -ffunction-sections -fdata-sections -fshort-enums -fno-common -funsigned-char -funsigned-bitfields -Wall -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD)  -gdwarf-3 -mno-const-data-in-progmem -I./FreeRTOS -I./FreeRTOS/include -I./FreeRTOS/portable/GCC/ATMega328      -MD -MP -MF "${OBJECTDIR}/Task/pwm.o.d" -MT "${OBJECTDIR}/Task/pwm.o.d" -MT ${OBJECTDIR}/Task/pwm.o -o ${OBJECTDIR}/Task/pwm.o Task/pwm.c 
 	
 endif
 

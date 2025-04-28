@@ -4,33 +4,11 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>FreeRTOS/include/FreeRTOS.h</itemPath>
-      <itemPath>FreeRTOS/portable/GCC/ATMega328/portmacro.h</itemPath>
-      <itemPath>FreeRTOS/include/StackMacros.h</itemPath>
-      <itemPath>FreeRTOS/include/atomic.h</itemPath>
-      <itemPath>FreeRTOS/include/croutine.h</itemPath>
-      <itemPath>FreeRTOS/include/deprecated_definitions.h</itemPath>
-      <itemPath>FreeRTOS/include/event_groups.h</itemPath>
-      <itemPath>FreeRTOS/include/list.h</itemPath>
-      <itemPath>FreeRTOS/include/message_buffer.h</itemPath>
-      <itemPath>FreeRTOS/include/mpu_prototypes.h</itemPath>
-      <itemPath>FreeRTOS/include/mpu_syscall_numbers.h</itemPath>
-      <itemPath>FreeRTOS/include/mpu_wrappers.h</itemPath>
-      <itemPath>FreeRTOS/include/newlib-freertos.h</itemPath>
-      <itemPath>FreeRTOS/include/picolibc-freertos.h</itemPath>
-      <itemPath>FreeRTOS/include/portable.h</itemPath>
-      <itemPath>FreeRTOS/include/projdefs.h</itemPath>
-      <itemPath>FreeRTOS/include/queue.h</itemPath>
-      <itemPath>FreeRTOS/include/semphr.h</itemPath>
-      <itemPath>FreeRTOS/include/stack_macros.h</itemPath>
-      <itemPath>FreeRTOS/include/stream_buffer.h</itemPath>
-      <itemPath>FreeRTOS/include/task.h</itemPath>
-      <itemPath>FreeRTOS/include/timers.h</itemPath>
-      <itemPath>FreeRTOS/FreeRTOSConfig.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
                    projectFiles="true">
+      <itemPath>Makefile</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -39,25 +17,9 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <logicalFolder name="Task" displayName="Task" projectFiles="true">
-        <itemPath>Task/blink.c</itemPath>
-        <itemPath>Task/numpad.c</itemPath>
-        <itemPath>Task/pwm.c</itemPath>
-      </logicalFolder>
       <itemPath>main.c</itemPath>
-      <itemPath>FreeRTOS/croutine.c</itemPath>
-      <itemPath>FreeRTOS/event_groups.c</itemPath>
-      <itemPath>FreeRTOS/list.c</itemPath>
-      <itemPath>FreeRTOS/queue.c</itemPath>
-      <itemPath>FreeRTOS/tasks.c</itemPath>
-      <itemPath>FreeRTOS/timers.c</itemPath>
-      <itemPath>FreeRTOS/portable/GCC/ATMega328/port.c</itemPath>
-      <itemPath>FreeRTOS/portable/MemMang/heap_4.c</itemPath>
     </logicalFolder>
   </logicalFolder>
-  <sourceRootList>
-    <Elem></Elem>
-  </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
     <conf name="default" type="2">
@@ -72,7 +34,7 @@
         <platform>3</platform>
       </toolsSet>
       <packs>
-        <pack name="ATmega_DFP" vendor="Microchip" version="3.1.264"/>
+        <pack name="ATmega_DFP" vendor="Microchip" version="3.3.279"/>
       </packs>
       <ScriptingSettings>
       </ScriptingSettings>
@@ -96,7 +58,7 @@
         <makeUseCleanTarget>false</makeUseCleanTarget>
         <makeCustomizationPreStep></makeCustomizationPreStep>
         <makeCustomizationPostStepEnabled>true</makeCustomizationPostStepEnabled>
-        <makeCustomizationPostStep>call post_build_noup.bat </makeCustomizationPostStep>
+        <makeCustomizationPostStep>call post_build_nortos.bat</makeCustomizationPostStep>
         <makeCustomizationPutChecksumInUserID>false</makeCustomizationPutChecksumInUserID>
         <makeCustomizationEnableLongLines>false</makeCustomizationEnableLongLines>
         <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
@@ -181,7 +143,6 @@
         <property key="opt-xc8-linker-serial" value=""/>
         <property key="program-the-device-with-default-config-words" value="false"/>
         <property key="remove-unused-sections" value="true"/>
-        <appendMe value="--memorysummary "/>
       </HI-TECH-LINK>
       <XC8-CO>
         <property key="coverage-enable" value=""/>
@@ -204,7 +165,6 @@
         <property key="stack-type" value="compiled"/>
         <property key="user-pack-device-support" value=""/>
         <property key="wpo-lto" value="false"/>
-        <appendMe value="-I./FreeRTOS -I./FreeRTOS/include -I./FreeRTOS/portable/GCC/ATMega328 "/>
       </XC8-config-global>
     </conf>
   </confs>

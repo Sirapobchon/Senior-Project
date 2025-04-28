@@ -13,6 +13,9 @@
 #include <string.h>
 #include <stdint.h>
 #include <util/delay.h>
+#include <avr/interrupt.h>
+
+extern QueueHandle_t morseQueue;
 
 // #define mainNEXT_TASK_1      (tskIDLE_PRIORITY)
 // #define mainNEXT_TASK_2		(tskIDLE_PRIORITY+2)
@@ -32,6 +35,7 @@ void vUARTMonitor(void *pvParameters);
 void vBlinkTask(void *pvParameters);
 void vPWMTask(void *pvParameters);
 void vNumpadTask(void *pvParameters);
+void vMorseTask(void *pvParameters);
 // Just make sure they're added to the project as source files.
 
 // FreeRTOS Application Idle Hook
@@ -47,15 +51,21 @@ void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName) {
 }
 
 portSHORT main(void) {
+    // Disable prescaler
+    CLKPR = (1 << CLKPCE);
+    CLKPR = 0;
+    
     // Initialize UART
     uart_init();
     
     uart_transmit_string("RTOS is running...\n");
 
     // Create a task for receiving new task files over UART
+    morseQueue = xQueueCreate(16, sizeof(char)); // Queue of 5 keys
     xTaskCreate(vBlinkTask, "BlinkTask", 128, NULL, 1, NULL);
     xTaskCreate(vPWMTask, "PWMTask", 128, NULL, 1, NULL);
     xTaskCreate(vNumpadTask, "NumpadTask", 192, NULL, 1, NULL);
+    xTaskCreate(vMorseTask, "Morse", 192, NULL, 1, NULL);
     xTaskCreate(vUARTMonitor, "UARTMonitor", 192, NULL, 1, NULL);
     
     // Start RTOS Scheduler

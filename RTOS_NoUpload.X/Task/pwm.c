@@ -20,6 +20,6 @@ void vPWMTask(void *pvParameters) {
         if (brightness == 0 || brightness == 255) {
             direction = -direction;
         }
-        vTaskDelay(pdMS_TO_TICKS(20));
+        vTaskDelay(pdMS_TO_TICKS(50));
     }
 }

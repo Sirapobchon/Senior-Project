@@ -67,7 +67,7 @@
     1 tab == 4 spaces!
 */
 
-#define F_CPU 8000000UL
+#define F_CPU 16000000UL
 
 #ifndef FREERTOS_CONFIG_H
 #define FREERTOS_CONFIG_H
