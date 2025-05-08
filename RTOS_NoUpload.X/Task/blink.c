@@ -7,7 +7,7 @@ void vBlinkTask(void *pvParameters) {
     DDRB |= (1 << PB2);      // Set PB1 as output
     while (1) {
         PORTB ^= (1 << PB2); // Toggle PB1
-        vTaskDelay(pdMS_TO_TICKS(2000));
+        vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }
 

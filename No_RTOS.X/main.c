@@ -33,13 +33,13 @@ void init(void) {
     UCSR0B = (1 << RXEN0) | (1 << TXEN0);
     UCSR0C = (1 << UCSZ01) | (1 << UCSZ00);
     
-    // LED: PB0 = Morse LED, PB1 = PWM LED, PB2 = Blink LED
-    DDRB |= (1 << PB0) | (1 << PB1) | (1 << PB2); 
+    // LED: PB0 = Morse LED, PB3 = PWM LED, PB2 = Blink LED
+    DDRB |= (1 << PB0) | (1 << PB3) | (1 << PB2); 
     
     // PWM on PB1 (OC1A) using Timer1 Fast PWM
-    TCCR1A = (1 << COM1A1) | (1 << WGM11) | (1 << WGM10); // Fast PWM 8-bit
-    TCCR1B = (1 << WGM12) | (1 << CS11); // Prescaler 8
-    OCR1A = 0; // Start at 0 brightness
+    TCCR2A = (1 << COM2A1) | (1 << WGM20) | (1 << WGM21); // WGM21 + WGM20 = Mode 3
+    TCCR2B = (1 << CS21);  // Prescaler 8, WGM22 = 0
+    OCR2A = 0; // Start at 0 brightness
     
     // Numpad
     // Rows: PB6, PB7, PD5, PD6 (outputs)
@@ -64,7 +64,7 @@ void uart_transmit_string(const char *str) {
 
 void blink_led_handler(void) {
     static uint8_t state = 0;
-    _delay_ms(100); // Delay 500ms
+    _delay_ms(1000); // Delay 1000ms
 
     if (state == 0) {
         PORTB |= (1 << PB2); // LED ON
@@ -79,7 +79,7 @@ void pwm_handler(void) {
     static uint8_t step = 0;
     static int8_t direction = 1; // 1 = increasing, -1 = decreasing
 
-    OCR1A = (step * 255) / 50; // Set PWM duty cycle
+    OCR2A = (step * 255) / 50; // Set PWM duty cycle
 
     _delay_ms(10); // Smooth fade
 

@@ -5,6 +5,7 @@
 #include "../globals.h"
 #include <string.h> 
 #include <stdbool.h>
+#include <stdlib.h>
 
 QueueHandle_t morseQueue; // Queue to pass keypresses
 
@@ -172,7 +173,7 @@ void vNumpadTask(void *pvParameters) {
                     }
                     
                     // Small debounce delay
-                    vTaskDelay(pdMS_TO_TICKS(1000));
+                    vTaskDelay(pdMS_TO_TICKS(200));
                 }
             }
         }

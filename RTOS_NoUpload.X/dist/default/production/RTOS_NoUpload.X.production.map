@@ -672,44 +672,44 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x0000000000000000     0x763e
+.debug_info     0x0000000000000000     0x7629
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x0000000000000000      0x5f4 C:/Program Files/Microchip/MPLABX/v6.20/packs/Microchip/ATmega_DFP/3.1.264/xc8/avr/lib/avr5/crtatmega328p.o
  .debug_info    0x00000000000005f4      0x2eb build/default/production/Task/blink.o
- .debug_info    0x00000000000008df      0x8e6 build/default/production/Task/numpad.o
- .debug_info    0x00000000000011c5      0x352 build/default/production/Task/pwm.o
- .debug_info    0x0000000000001517      0x7dc build/default/production/main.o
- .debug_info    0x0000000000001cf3      0x553 build/default/production/FreeRTOS/list.o
- .debug_info    0x0000000000002246     0x1c2a build/default/production/FreeRTOS/queue.o
- .debug_info    0x0000000000003e70     0x2985 build/default/production/FreeRTOS/tasks.o
- .debug_info    0x00000000000067f5      0x4f6 build/default/production/FreeRTOS/portable/GCC/ATMega328/port.o
- .debug_info    0x0000000000006ceb      0x953 build/default/production/FreeRTOS/portable/MemMang/heap_4.o
+ .debug_info    0x00000000000008df      0x8d1 build/default/production/Task/numpad.o
+ .debug_info    0x00000000000011b0      0x352 build/default/production/Task/pwm.o
+ .debug_info    0x0000000000001502      0x7dc build/default/production/main.o
+ .debug_info    0x0000000000001cde      0x553 build/default/production/FreeRTOS/list.o
+ .debug_info    0x0000000000002231     0x1c2a build/default/production/FreeRTOS/queue.o
+ .debug_info    0x0000000000003e5b     0x2985 build/default/production/FreeRTOS/tasks.o
+ .debug_info    0x00000000000067e0      0x4f6 build/default/production/FreeRTOS/portable/GCC/ATMega328/port.o
+ .debug_info    0x0000000000006cd6      0x953 build/default/production/FreeRTOS/portable/MemMang/heap_4.o
 
-.debug_abbrev   0x0000000000000000     0x1512
+.debug_abbrev   0x0000000000000000     0x14fa
  *(.debug_abbrev)
  .debug_abbrev  0x0000000000000000      0x5a2 C:/Program Files/Microchip/MPLABX/v6.20/packs/Microchip/ATmega_DFP/3.1.264/xc8/avr/lib/avr5/crtatmega328p.o
  .debug_abbrev  0x00000000000005a2       0x97 build/default/production/Task/blink.o
- .debug_abbrev  0x0000000000000639      0x1e2 build/default/production/Task/numpad.o
- .debug_abbrev  0x000000000000081b       0xbe build/default/production/Task/pwm.o
- .debug_abbrev  0x00000000000008d9      0x194 build/default/production/main.o
- .debug_abbrev  0x0000000000000a6d      0x10f build/default/production/FreeRTOS/list.o
- .debug_abbrev  0x0000000000000b7c      0x281 build/default/production/FreeRTOS/queue.o
- .debug_abbrev  0x0000000000000dfd      0x375 build/default/production/FreeRTOS/tasks.o
- .debug_abbrev  0x0000000000001172      0x157 build/default/production/FreeRTOS/portable/GCC/ATMega328/port.o
- .debug_abbrev  0x00000000000012c9      0x249 build/default/production/FreeRTOS/portable/MemMang/heap_4.o
+ .debug_abbrev  0x0000000000000639      0x1ca build/default/production/Task/numpad.o
+ .debug_abbrev  0x0000000000000803       0xbe build/default/production/Task/pwm.o
+ .debug_abbrev  0x00000000000008c1      0x194 build/default/production/main.o
+ .debug_abbrev  0x0000000000000a55      0x10f build/default/production/FreeRTOS/list.o
+ .debug_abbrev  0x0000000000000b64      0x281 build/default/production/FreeRTOS/queue.o
+ .debug_abbrev  0x0000000000000de5      0x375 build/default/production/FreeRTOS/tasks.o
+ .debug_abbrev  0x000000000000115a      0x157 build/default/production/FreeRTOS/portable/GCC/ATMega328/port.o
+ .debug_abbrev  0x00000000000012b1      0x249 build/default/production/FreeRTOS/portable/MemMang/heap_4.o
 
-.debug_line     0x0000000000000000     0x2ebc
+.debug_line     0x0000000000000000     0x2efd
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x0000000000000000      0x134 C:/Program Files/Microchip/MPLABX/v6.20/packs/Microchip/ATmega_DFP/3.1.264/xc8/avr/lib/avr5/crtatmega328p.o
  .debug_line    0x0000000000000134       0xfb build/default/production/Task/blink.o
- .debug_line    0x000000000000022f      0x349 build/default/production/Task/numpad.o
- .debug_line    0x0000000000000578      0x152 build/default/production/Task/pwm.o
- .debug_line    0x00000000000006ca      0x289 build/default/production/main.o
- .debug_line    0x0000000000000953      0x1f4 build/default/production/FreeRTOS/list.o
- .debug_line    0x0000000000000b47      0xb19 build/default/production/FreeRTOS/queue.o
- .debug_line    0x0000000000001660     0x11be build/default/production/FreeRTOS/tasks.o
- .debug_line    0x000000000000281e      0x2c9 build/default/production/FreeRTOS/portable/GCC/ATMega328/port.o
- .debug_line    0x0000000000002ae7      0x3d5 build/default/production/FreeRTOS/portable/MemMang/heap_4.o
+ .debug_line    0x000000000000022f      0x38a build/default/production/Task/numpad.o
+ .debug_line    0x00000000000005b9      0x152 build/default/production/Task/pwm.o
+ .debug_line    0x000000000000070b      0x289 build/default/production/main.o
+ .debug_line    0x0000000000000994      0x1f4 build/default/production/FreeRTOS/list.o
+ .debug_line    0x0000000000000b88      0xb19 build/default/production/FreeRTOS/queue.o
+ .debug_line    0x00000000000016a1     0x11be build/default/production/FreeRTOS/tasks.o
+ .debug_line    0x000000000000285f      0x2c9 build/default/production/FreeRTOS/portable/GCC/ATMega328/port.o
+ .debug_line    0x0000000000002b28      0x3d5 build/default/production/FreeRTOS/portable/MemMang/heap_4.o
 
 .debug_frame    0x0000000000000000      0xc64
  *(.debug_frame)
@@ -790,140 +790,140 @@ LOAD data_init
                 0x0000000000000000       0x40 C:/Program Files/Microchip/MPLABX/v6.20/packs/Microchip/ATmega_DFP/3.1.264/xc8/avr/lib/avr5/crtatmega328p.o
 
 .bss.morseQueue
-                0x00000000008008b0        0x2
+                0x00000000008006af        0x2
  .bss.morseQueue
-                0x00000000008008b0        0x2 build/default/production/Task/numpad.o
-                0x00000000008008b0                morseQueue
+                0x00000000008006af        0x2 build/default/production/Task/numpad.o
+                0x00000000008006af                morseQueue
 
 .bss.uxSchedulerSuspended
-                0x00000000008008cc        0x1
+                0x00000000008006cb        0x1
  .bss.uxSchedulerSuspended
-                0x00000000008008cc        0x1 build/default/production/FreeRTOS/tasks.o
+                0x00000000008006cb        0x1 build/default/production/FreeRTOS/tasks.o
 
 .bss.xIdleTaskHandles
-                0x00000000008008b4        0x2
+                0x00000000008006b3        0x2
  .bss.xIdleTaskHandles
-                0x00000000008008b4        0x2 build/default/production/FreeRTOS/tasks.o
+                0x00000000008006b3        0x2 build/default/production/FreeRTOS/tasks.o
 
 .bss.xNextTaskUnblockTime
-                0x00000000008008b6        0x2
+                0x00000000008006b5        0x2
  .bss.xNextTaskUnblockTime
-                0x00000000008008b6        0x2 build/default/production/FreeRTOS/tasks.o
+                0x00000000008006b5        0x2 build/default/production/FreeRTOS/tasks.o
 
 .bss.uxTaskNumber
-                0x00000000008008ce        0x1
+                0x00000000008006cd        0x1
  .bss.uxTaskNumber
-                0x00000000008008ce        0x1 build/default/production/FreeRTOS/tasks.o
+                0x00000000008006cd        0x1 build/default/production/FreeRTOS/tasks.o
 
 .bss.xNumOfOverflows
-                0x00000000008008cf        0x1
+                0x00000000008006ce        0x1
  .bss.xNumOfOverflows
-                0x00000000008008cf        0x1 build/default/production/FreeRTOS/tasks.o
+                0x00000000008006ce        0x1 build/default/production/FreeRTOS/tasks.o
 
 .bss.xYieldPendings
-                0x00000000008008d0        0x1
+                0x00000000008006cf        0x1
  .bss.xYieldPendings
-                0x00000000008008d0        0x1 build/default/production/FreeRTOS/tasks.o
+                0x00000000008006cf        0x1 build/default/production/FreeRTOS/tasks.o
 
 .bss.xPendedTicks
-                0x00000000008008b8        0x2
+                0x00000000008006b7        0x2
  .bss.xPendedTicks
-                0x00000000008008b8        0x2 build/default/production/FreeRTOS/tasks.o
+                0x00000000008006b7        0x2 build/default/production/FreeRTOS/tasks.o
 
 .bss.xSchedulerRunning
-                0x00000000008008d1        0x1
+                0x00000000008006d0        0x1
  .bss.xSchedulerRunning
-                0x00000000008008d1        0x1 build/default/production/FreeRTOS/tasks.o
+                0x00000000008006d0        0x1 build/default/production/FreeRTOS/tasks.o
 
 .bss.uxTopReadyPriority
-                0x00000000008008d2        0x1
+                0x00000000008006d1        0x1
  .bss.uxTopReadyPriority
-                0x00000000008008d2        0x1 build/default/production/FreeRTOS/tasks.o
+                0x00000000008006d1        0x1 build/default/production/FreeRTOS/tasks.o
 
 .bss.xTickCount
-                0x00000000008008ba        0x2
+                0x00000000008006b9        0x2
  .bss.xTickCount
-                0x00000000008008ba        0x2 build/default/production/FreeRTOS/tasks.o
+                0x00000000008006b9        0x2 build/default/production/FreeRTOS/tasks.o
 
 .bss.uxCurrentNumberOfTasks
-                0x00000000008008d3        0x1
+                0x00000000008006d2        0x1
  .bss.uxCurrentNumberOfTasks
-                0x00000000008008d3        0x1 build/default/production/FreeRTOS/tasks.o
+                0x00000000008006d2        0x1 build/default/production/FreeRTOS/tasks.o
 
 .bss.uxDeletedTasksWaitingCleanUp
-                0x00000000008008d4        0x1
+                0x00000000008006d3        0x1
  .bss.uxDeletedTasksWaitingCleanUp
-                0x00000000008008d4        0x1 build/default/production/FreeRTOS/tasks.o
+                0x00000000008006d3        0x1 build/default/production/FreeRTOS/tasks.o
 
 .bss.xTasksWaitingTermination
-                0x0000000000800883        0x9
+                0x0000000000800682        0x9
  .bss.xTasksWaitingTermination
-                0x0000000000800883        0x9 build/default/production/FreeRTOS/tasks.o
+                0x0000000000800682        0x9 build/default/production/FreeRTOS/tasks.o
 
 .bss.xPendingReadyList
-                0x000000000080088c        0x9
+                0x000000000080068b        0x9
  .bss.xPendingReadyList
-                0x000000000080088c        0x9 build/default/production/FreeRTOS/tasks.o
+                0x000000000080068b        0x9 build/default/production/FreeRTOS/tasks.o
 
 .bss.pxOverflowDelayedTaskList
-                0x00000000008008bc        0x2
+                0x00000000008006bb        0x2
  .bss.pxOverflowDelayedTaskList
-                0x00000000008008bc        0x2 build/default/production/FreeRTOS/tasks.o
+                0x00000000008006bb        0x2 build/default/production/FreeRTOS/tasks.o
 
 .bss.pxDelayedTaskList
-                0x00000000008008be        0x2
+                0x00000000008006bd        0x2
  .bss.pxDelayedTaskList
-                0x00000000008008be        0x2 build/default/production/FreeRTOS/tasks.o
+                0x00000000008006bd        0x2 build/default/production/FreeRTOS/tasks.o
 
 .bss.xDelayedTaskList2
-                0x0000000000800895        0x9
+                0x0000000000800694        0x9
  .bss.xDelayedTaskList2
-                0x0000000000800895        0x9 build/default/production/FreeRTOS/tasks.o
+                0x0000000000800694        0x9 build/default/production/FreeRTOS/tasks.o
 
 .bss.xDelayedTaskList1
-                0x000000000080089e        0x9
+                0x000000000080069d        0x9
  .bss.xDelayedTaskList1
-                0x000000000080089e        0x9 build/default/production/FreeRTOS/tasks.o
+                0x000000000080069d        0x9 build/default/production/FreeRTOS/tasks.o
 
 .bss.pxReadyTasksLists
-                0x000000000080085f       0x24
+                0x000000000080065e       0x24
  .bss.pxReadyTasksLists
-                0x000000000080085f       0x24 build/default/production/FreeRTOS/tasks.o
+                0x000000000080065e       0x24 build/default/production/FreeRTOS/tasks.o
 
 .bss.pxCurrentTCB
-                0x00000000008008c0        0x2
+                0x00000000008006bf        0x2
  .bss.pxCurrentTCB
-                0x00000000008008c0        0x2 build/default/production/FreeRTOS/tasks.o
-                0x00000000008008c0                pxCurrentTCB
+                0x00000000008006bf        0x2 build/default/production/FreeRTOS/tasks.o
+                0x00000000008006bf                pxCurrentTCB
 
 .bss.xNumberOfSuccessfulFrees
-                0x00000000008008c2        0x2
+                0x00000000008006c1        0x2
  .bss.xNumberOfSuccessfulFrees
-                0x00000000008008c2        0x2 build/default/production/FreeRTOS/portable/MemMang/heap_4.o
+                0x00000000008006c1        0x2 build/default/production/FreeRTOS/portable/MemMang/heap_4.o
 
 .bss.xNumberOfSuccessfulAllocations
-                0x00000000008008c4        0x2
+                0x00000000008006c3        0x2
  .bss.xNumberOfSuccessfulAllocations
-                0x00000000008008c4        0x2 build/default/production/FreeRTOS/portable/MemMang/heap_4.o
+                0x00000000008006c3        0x2 build/default/production/FreeRTOS/portable/MemMang/heap_4.o
 
 .bss.xMinimumEverFreeBytesRemaining
-                0x00000000008008c6        0x2
+                0x00000000008006c5        0x2
  .bss.xMinimumEverFreeBytesRemaining
-                0x00000000008008c6        0x2 build/default/production/FreeRTOS/portable/MemMang/heap_4.o
+                0x00000000008006c5        0x2 build/default/production/FreeRTOS/portable/MemMang/heap_4.o
 
 .bss.xFreeBytesRemaining
-                0x00000000008008c8        0x2
+                0x00000000008006c7        0x2
  .bss.xFreeBytesRemaining
-                0x00000000008008c8        0x2 build/default/production/FreeRTOS/portable/MemMang/heap_4.o
+                0x00000000008006c7        0x2 build/default/production/FreeRTOS/portable/MemMang/heap_4.o
 
-.bss.pxEnd      0x00000000008008ca        0x2
- .bss.pxEnd     0x00000000008008ca        0x2 build/default/production/FreeRTOS/portable/MemMang/heap_4.o
+.bss.pxEnd      0x00000000008006c9        0x2
+ .bss.pxEnd     0x00000000008006c9        0x2 build/default/production/FreeRTOS/portable/MemMang/heap_4.o
 
-.bss.xStart     0x00000000008008ac        0x4
- .bss.xStart    0x00000000008008ac        0x4 build/default/production/FreeRTOS/portable/MemMang/heap_4.o
+.bss.xStart     0x00000000008006ab        0x4
+ .bss.xStart    0x00000000008006ab        0x4 build/default/production/FreeRTOS/portable/MemMang/heap_4.o
 
-.bss.ucHeap     0x0000000000800100      0x600
- .bss.ucHeap    0x0000000000800100      0x600 build/default/production/FreeRTOS/portable/MemMang/heap_4.o
+.bss.ucHeap     0x0000000000800100      0x400
+ .bss.ucHeap    0x0000000000800100      0x400 build/default/production/FreeRTOS/portable/MemMang/heap_4.o
 
 .text.xTaskCreate
                 0x00000000000000f2      0x274
@@ -1058,262 +1058,262 @@ LOAD data_init
                 0x0000000000001912       0x80 build/default/production/FreeRTOS/portable/GCC/ATMega328/port.o
                 0x0000000000001912                xPortStartScheduler
 
-.text.vPWMTask  0x0000000000001992       0x7a
- .text.vPWMTask
-                0x0000000000001992       0x7a build/default/production/Task/pwm.o
-                0x0000000000001992                vPWMTask
+.text.atoi      0x0000000000001992       0x72
+ .text.atoi     0x0000000000001992       0x72 c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(atoi.o)
+                0x0000000000001992                atoi
 
-.text.atoi      0x0000000000001a0c       0x72
- .text.atoi     0x0000000000001a0c       0x72 c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(atoi.o)
-                0x0000000000001a0c                atoi
+.text.vPWMTask  0x0000000000001a04       0x70
+ .text.vPWMTask
+                0x0000000000001a04       0x70 build/default/production/Task/pwm.o
+                0x0000000000001a04                vPWMTask
 
 .text.prvCheckTasksWaitingTermination
-                0x0000000000001a7e       0x68
+                0x0000000000001a74       0x68
  .text.prvCheckTasksWaitingTermination
-                0x0000000000001a7e       0x68 build/default/production/FreeRTOS/tasks.o
+                0x0000000000001a74       0x68 build/default/production/FreeRTOS/tasks.o
 
 .text.vListInsert
-                0x0000000000001ae6       0x62
+                0x0000000000001adc       0x62
  .text.vListInsert
-                0x0000000000001ae6       0x62 build/default/production/FreeRTOS/list.o
-                0x0000000000001ae6                vListInsert
+                0x0000000000001adc       0x62 build/default/production/FreeRTOS/list.o
+                0x0000000000001adc                vListInsert
 
 .text.xTaskCheckForTimeOut
-                0x0000000000001b48       0x62
+                0x0000000000001b3e       0x62
  .text.xTaskCheckForTimeOut
-                0x0000000000001b48       0x62 build/default/production/FreeRTOS/tasks.o
-                0x0000000000001b48                xTaskCheckForTimeOut
+                0x0000000000001b3e       0x62 build/default/production/FreeRTOS/tasks.o
+                0x0000000000001b3e                xTaskCheckForTimeOut
 
 .text.uxListRemove
-                0x0000000000001baa       0x4c
+                0x0000000000001ba0       0x4c
  .text.uxListRemove
-                0x0000000000001baa       0x4c build/default/production/FreeRTOS/list.o
-                0x0000000000001baa                uxListRemove
+                0x0000000000001ba0       0x4c build/default/production/FreeRTOS/list.o
+                0x0000000000001ba0                uxListRemove
 
 .text.blinkMorse
-                0x0000000000001bf6       0x4a
+                0x0000000000001bec       0x4a
  .text.blinkMorse
-                0x0000000000001bf6       0x4a build/default/production/Task/numpad.o
-                0x0000000000001bf6                blinkMorse
+                0x0000000000001bec       0x4a build/default/production/Task/numpad.o
+                0x0000000000001bec                blinkMorse
 
 .text.getMorseCode
-                0x0000000000001c40       0x46
+                0x0000000000001c36       0x46
  .text.getMorseCode
-                0x0000000000001c40       0x46 build/default/production/Task/numpad.o
-                0x0000000000001c40                getMorseCode
+                0x0000000000001c36       0x46 build/default/production/Task/numpad.o
+                0x0000000000001c36                getMorseCode
 
 .text.prvResetNextTaskUnblockTime
-                0x0000000000001c86       0x38
+                0x0000000000001c7c       0x38
  .text.prvResetNextTaskUnblockTime
-                0x0000000000001c86       0x38 build/default/production/FreeRTOS/tasks.o
+                0x0000000000001c7c       0x38 build/default/production/FreeRTOS/tasks.o
 
 .text.vMorseTask
-                0x0000000000001cbe       0x34
+                0x0000000000001cb4       0x34
  .text.vMorseTask
-                0x0000000000001cbe       0x34 build/default/production/Task/numpad.o
-                0x0000000000001cbe                vMorseTask
+                0x0000000000001cb4       0x34 build/default/production/Task/numpad.o
+                0x0000000000001cb4                vMorseTask
 
 .text.prvCopyDataFromQueue
-                0x0000000000001cf2       0x34
+                0x0000000000001ce8       0x34
  .text.prvCopyDataFromQueue
-                0x0000000000001cf2       0x34 build/default/production/FreeRTOS/queue.o
+                0x0000000000001ce8       0x34 build/default/production/FreeRTOS/queue.o
 
 .text.vTaskDelay
-                0x0000000000001d26       0x28
+                0x0000000000001d1c       0x28
  .text.vTaskDelay
-                0x0000000000001d26       0x28 build/default/production/FreeRTOS/tasks.o
-                0x0000000000001d26                vTaskDelay
+                0x0000000000001d1c       0x28 build/default/production/FreeRTOS/tasks.o
+                0x0000000000001d1c                vTaskDelay
 
 .text.libgcc.div
-                0x0000000000001d4e       0x28
+                0x0000000000001d44       0x28
  .text.libgcc.div
-                0x0000000000001d4e       0x28 c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_udivmodhi4.o)
-                0x0000000000001d4e                __udivmodhi4
+                0x0000000000001d44       0x28 c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_udivmodhi4.o)
+                0x0000000000001d44                __udivmodhi4
 
 .text.vTaskPlaceOnEventList
-                0x0000000000001d76       0x24
+                0x0000000000001d6c       0x24
  .text.vTaskPlaceOnEventList
-                0x0000000000001d76       0x24 build/default/production/FreeRTOS/tasks.o
-                0x0000000000001d76                vTaskPlaceOnEventList
+                0x0000000000001d6c       0x24 build/default/production/FreeRTOS/tasks.o
+                0x0000000000001d6c                vTaskPlaceOnEventList
 
 .text.vUARTMonitor
-                0x0000000000001d9a       0x20
+                0x0000000000001d90       0x20
  .text.vUARTMonitor
-                0x0000000000001d9a       0x20 build/default/production/main.o
-                0x0000000000001d9a                vUARTMonitor
+                0x0000000000001d90       0x20 build/default/production/main.o
+                0x0000000000001d90                vUARTMonitor
 
 .text.uart_transmit_string
-                0x0000000000001dba       0x1e
+                0x0000000000001db0       0x1e
  .text.uart_transmit_string
-                0x0000000000001dba       0x1e build/default/production/main.o
-                0x0000000000001dba                uart_transmit_string
+                0x0000000000001db0       0x1e build/default/production/main.o
+                0x0000000000001db0                uart_transmit_string
 
 .text.libgcc.mul
-                0x0000000000001dd8       0x1e
+                0x0000000000001dce       0x1e
  .text.libgcc.mul
-                0x0000000000001dd8       0x1e c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_umulhisi3.o)
-                0x0000000000001dd8                __umulhisi3
+                0x0000000000001dce       0x1e c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_umulhisi3.o)
+                0x0000000000001dce                __umulhisi3
 
 .text.vListInitialise
-                0x0000000000001df6       0x1c
+                0x0000000000001dec       0x1c
  .text.vListInitialise
-                0x0000000000001df6       0x1c build/default/production/FreeRTOS/list.o
-                0x0000000000001df6                vListInitialise
+                0x0000000000001dec       0x1c build/default/production/FreeRTOS/list.o
+                0x0000000000001dec                vListInitialise
 
 .text.uart_init
-                0x0000000000001e12       0x18
+                0x0000000000001e08       0x18
  .text.uart_init
-                0x0000000000001e12       0x18 build/default/production/main.o
-                0x0000000000001e12                uart_init
+                0x0000000000001e08       0x18 build/default/production/main.o
+                0x0000000000001e08                uart_init
 
 .text.vApplicationStackOverflowHook
-                0x0000000000001e2a       0x18
+                0x0000000000001e20       0x18
  .text.vApplicationStackOverflowHook
-                0x0000000000001e2a       0x18 build/default/production/main.o
-                0x0000000000001e2a                vApplicationStackOverflowHook
+                0x0000000000001e20       0x18 build/default/production/main.o
+                0x0000000000001e20                vApplicationStackOverflowHook
 
 .text.prvIdleTask
-                0x0000000000001e42       0x18
+                0x0000000000001e38       0x18
  .text.prvIdleTask
-                0x0000000000001e42       0x18 build/default/production/FreeRTOS/tasks.o
+                0x0000000000001e38       0x18 build/default/production/FreeRTOS/tasks.o
 
 .text.prvIsQueueEmpty
-                0x0000000000001e5a       0x16
+                0x0000000000001e50       0x16
  .text.prvIsQueueEmpty
-                0x0000000000001e5a       0x16 build/default/production/FreeRTOS/queue.o
+                0x0000000000001e50       0x16 build/default/production/FreeRTOS/queue.o
 
 .text.vTaskInternalSetTimeOutState
-                0x0000000000001e70       0x16
+                0x0000000000001e66       0x16
  .text.vTaskInternalSetTimeOutState
-                0x0000000000001e70       0x16 build/default/production/FreeRTOS/tasks.o
-                0x0000000000001e70                vTaskInternalSetTimeOutState
+                0x0000000000001e66       0x16 build/default/production/FreeRTOS/tasks.o
+                0x0000000000001e66                vTaskInternalSetTimeOutState
 
-.text.exit      0x0000000000001e86       0x16
- .text.exit     0x0000000000001e86       0x16 c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(exit.o)
-                0x0000000000001e86                exit
+.text.exit      0x0000000000001e7c       0x16
+ .text.exit     0x0000000000001e7c       0x16 c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(exit.o)
+                0x0000000000001e7c                exit
 
-.text.memcpy    0x0000000000001e9c       0x16
- .text.memcpy   0x0000000000001e9c       0x16 c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(memcpy.o)
-                0x0000000000001e9c                memcpy
+.text.memcpy    0x0000000000001e92       0x16
+ .text.memcpy   0x0000000000001e92       0x16 c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(memcpy.o)
+                0x0000000000001e92                memcpy
 
 .text.vBlinkTask
-                0x0000000000001eb2       0x14
+                0x0000000000001ea8       0x14
  .text.vBlinkTask
-                0x0000000000001eb2       0x14 build/default/production/Task/blink.o
-                0x0000000000001eb2                vBlinkTask
+                0x0000000000001ea8       0x14 build/default/production/Task/blink.o
+                0x0000000000001ea8                vBlinkTask
 
-.text.memset    0x0000000000001ec6       0x12
- .text.memset   0x0000000000001ec6       0x12 c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(memset.o)
-                0x0000000000001ec6                memset
+.text.memset    0x0000000000001ebc       0x12
+ .text.memset   0x0000000000001ebc       0x12 c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(memset.o)
+                0x0000000000001ebc                memset
 
 .text.uart_transmit
-                0x0000000000001ed8       0x10
+                0x0000000000001ece       0x10
  .text.uart_transmit
-                0x0000000000001ed8       0x10 build/default/production/main.o
-                0x0000000000001ed8                uart_transmit
+                0x0000000000001ece       0x10 build/default/production/main.o
+                0x0000000000001ece                uart_transmit
 
 .text.vTaskSuspendAll
-                0x0000000000001ee8        0xc
+                0x0000000000001ede        0xc
  .text.vTaskSuspendAll
-                0x0000000000001ee8        0xc build/default/production/FreeRTOS/tasks.o
-                0x0000000000001ee8                vTaskSuspendAll
+                0x0000000000001ede        0xc build/default/production/FreeRTOS/tasks.o
+                0x0000000000001ede                vTaskSuspendAll
 
 .text.vListInitialiseItem
-                0x0000000000001ef4        0x8
+                0x0000000000001eea        0x8
  .text.vListInitialiseItem
-                0x0000000000001ef4        0x8 build/default/production/FreeRTOS/list.o
-                0x0000000000001ef4                vListInitialiseItem
+                0x0000000000001eea        0x8 build/default/production/FreeRTOS/list.o
+                0x0000000000001eea                vListInitialiseItem
 
 .text.vTaskMissedYield
-                0x0000000000001efc        0x8
+                0x0000000000001ef2        0x8
  .text.vTaskMissedYield
-                0x0000000000001efc        0x8 build/default/production/FreeRTOS/tasks.o
-                0x0000000000001efc                vTaskMissedYield
+                0x0000000000001ef2        0x8 build/default/production/FreeRTOS/tasks.o
+                0x0000000000001ef2                vTaskMissedYield
 
 .text.__vector_11
-                0x0000000000001f04        0x6
+                0x0000000000001efa        0x6
  .text.__vector_11
-                0x0000000000001f04        0x6 build/default/production/FreeRTOS/portable/GCC/ATMega328/port.o
-                0x0000000000001f04                __vector_11
+                0x0000000000001efa        0x6 build/default/production/FreeRTOS/portable/GCC/ATMega328/port.o
+                0x0000000000001efa                __vector_11
 
-.text           0x0000000000001f0a        0x4
- .text          0x0000000000001f0a        0x4 C:/Program Files/Microchip/MPLABX/v6.20/packs/Microchip/ATmega_DFP/3.1.264/xc8/avr/lib/avr5/crtatmega328p.o
-                0x0000000000001f0a                __vector_22
-                0x0000000000001f0a                __vector_1
-                0x0000000000001f0a                __vector_24
-                0x0000000000001f0a                __vector_12
-                0x0000000000001f0a                __bad_interrupt
-                0x0000000000001f0a                __vector_6
-                0x0000000000001f0a                __vector_3
-                0x0000000000001f0a                __vector_23
-                0x0000000000001f0a                __vector_25
-                0x0000000000001f0a                __vector_13
-                0x0000000000001f0a                __vector_17
-                0x0000000000001f0a                __vector_19
-                0x0000000000001f0a                __vector_7
-                0x0000000000001f0a                __vector_5
-                0x0000000000001f0a                __vector_4
-                0x0000000000001f0a                __vector_9
-                0x0000000000001f0a                __vector_2
-                0x0000000000001f0a                __vector_21
-                0x0000000000001f0a                __vector_15
-                0x0000000000001f0a                __vector_8
-                0x0000000000001f0a                __vector_14
-                0x0000000000001f0a                __vector_10
-                0x0000000000001f0a                __vector_16
-                0x0000000000001f0a                __vector_18
-                0x0000000000001f0a                __vector_20
+.text           0x0000000000001f00        0x4
+ .text          0x0000000000001f00        0x4 C:/Program Files/Microchip/MPLABX/v6.20/packs/Microchip/ATmega_DFP/3.1.264/xc8/avr/lib/avr5/crtatmega328p.o
+                0x0000000000001f00                __vector_22
+                0x0000000000001f00                __vector_1
+                0x0000000000001f00                __vector_24
+                0x0000000000001f00                __vector_12
+                0x0000000000001f00                __bad_interrupt
+                0x0000000000001f00                __vector_6
+                0x0000000000001f00                __vector_3
+                0x0000000000001f00                __vector_23
+                0x0000000000001f00                __vector_25
+                0x0000000000001f00                __vector_13
+                0x0000000000001f00                __vector_17
+                0x0000000000001f00                __vector_19
+                0x0000000000001f00                __vector_7
+                0x0000000000001f00                __vector_5
+                0x0000000000001f00                __vector_4
+                0x0000000000001f00                __vector_9
+                0x0000000000001f00                __vector_2
+                0x0000000000001f00                __vector_21
+                0x0000000000001f00                __vector_15
+                0x0000000000001f00                __vector_8
+                0x0000000000001f00                __vector_14
+                0x0000000000001f00                __vector_10
+                0x0000000000001f00                __vector_16
+                0x0000000000001f00                __vector_18
+                0x0000000000001f00                __vector_20
 
-.text._Exit     0x0000000000001f0e        0x4
- .text._Exit    0x0000000000001f0e        0x4 c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(_Exit.o)
-                0x0000000000001f0e                _Exit
+.text._Exit     0x0000000000001f04        0x4
+ .text._Exit    0x0000000000001f04        0x4 c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(_Exit.o)
+                0x0000000000001f04                _Exit
 
 .text.vApplicationIdleHook
-                0x0000000000001f12        0x2
+                0x0000000000001f08        0x2
  .text.vApplicationIdleHook
-                0x0000000000001f12        0x2 build/default/production/main.o
-                0x0000000000001f12                vApplicationIdleHook
+                0x0000000000001f08        0x2 build/default/production/main.o
+                0x0000000000001f08                vApplicationIdleHook
 
 .text.__dummy_fini
-                0x0000000000001f14        0x2
+                0x0000000000001f0a        0x2
  .text.__dummy_fini
-                0x0000000000001f14        0x2 c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(exit.o)
-                0x0000000000001f14                _fini
+                0x0000000000001f0a        0x2 c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(exit.o)
+                0x0000000000001f0a                _fini
 
 .text.__dummy_funcs_on_exit
-                0x0000000000001f16        0x2
+                0x0000000000001f0c        0x2
  .text.__dummy_funcs_on_exit
-                0x0000000000001f16        0x2 c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(exit.o)
-                0x0000000000001f16                __funcs_on_exit
+                0x0000000000001f0c        0x2 c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(exit.o)
+                0x0000000000001f0c                __funcs_on_exit
 
 .text.__dummy_simulator_exit
-                0x0000000000001f18        0x2
+                0x0000000000001f0e        0x2
  .text.__dummy_simulator_exit
-                0x0000000000001f18        0x2 c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(exit.o)
-                0x0000000000001f18                __simulator_exit
+                0x0000000000001f0e        0x2 c:/program files/microchip/xc8/v2.50/avr/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(exit.o)
+                0x0000000000001f0e                __simulator_exit
 
-.rodata         0x0000000000800700       0xa0 load address 0x0000000000001f1a
- .rodata        0x0000000000800700       0xa0 build/default/production/Task/numpad.o
+.rodata         0x0000000000800500       0xa0 load address 0x0000000000001f10
+ .rodata        0x0000000000800500       0xa0 build/default/production/Task/numpad.o
 
-.rodata         0x00000000008007a0       0x8f load address 0x0000000000001fba
- .rodata        0x00000000008007a0       0x8f build/default/production/main.o
+.rodata         0x00000000008005a0       0x8e load address 0x0000000000001fb0
+ .rodata        0x00000000008005a0       0x8e build/default/production/main.o
 
 .rodata.morse_table
-                0x000000000080082f       0x30 load address 0x0000000000002049
+                0x000000000080062e       0x30 load address 0x000000000000203e
  .rodata.morse_table
-                0x000000000080082f       0x30 build/default/production/Task/numpad.o
-                0x000000000080082f                morse_table
+                0x000000000080062e       0x30 build/default/production/Task/numpad.o
+                0x000000000080062e                morse_table
 
-.rodata         0x00000000008008a7        0x5 load address 0x0000000000002079
- .rodata        0x00000000008008a7        0x5 build/default/production/FreeRTOS/tasks.o
+.rodata         0x00000000008006a6        0x5 load address 0x000000000000206e
+ .rodata        0x00000000008006a6        0x5 build/default/production/FreeRTOS/tasks.o
 
 .data.pwm_brightness
-                0x00000000008008b2        0x2 load address 0x000000000000207e
+                0x00000000008006b1        0x2 load address 0x0000000000002073
  .data.pwm_brightness
-                0x00000000008008b2        0x2 build/default/production/main.o
-                0x00000000008008b2                pwm_brightness
+                0x00000000008006b1        0x2 build/default/production/main.o
+                0x00000000008006b1                pwm_brightness
 
 .data.uxTopUsedPriority
-                0x00000000008008cd        0x1 load address 0x0000000000002080
+                0x00000000008006cc        0x1 load address 0x0000000000002075
  .data.uxTopUsedPriority
-                0x00000000008008cd        0x1 build/default/production/FreeRTOS/tasks.o
+                0x00000000008006cc        0x1 build/default/production/FreeRTOS/tasks.o

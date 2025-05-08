@@ -47,7 +47,7 @@ void vApplicationIdleHook(void) {
 }
 
 void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName) {
-    uart_transmit_string("\n[ERROR] Stack overflow in task: ");
+    uart_transmit_string("[ERROR] Stack overflow in task: ");
     uart_transmit_string(pcTaskName);
     uart_transmit('\n');
     while (1); // Halt system for safety
@@ -64,13 +64,13 @@ portSHORT main(void) {
     uart_transmit_string("RTOS is running...\n");
 
     // Create a task for receiving new task files over UART
-    morseQueue = xQueueCreate(16, sizeof(char)); // Queue of 5 keys
-    xTaskCreate(vBlinkTask, "BlinkTask", 128, NULL, 1, NULL);
-    xTaskCreate(vPWMTask, "PWMTask", 128, NULL, 1, NULL);
-    xTaskCreate(vNumpadTask, "NumpadTask", 192, NULL, 1, NULL);
-    xTaskCreate(vMorseTask, "Morse", 192, NULL, 1, NULL);
-    xTaskCreate(vUARTMonitor, "UARTMonitor", 192, NULL, 1, NULL);
-    
+    morseQueue = xQueueCreate(10, sizeof(char));
+    xTaskCreate(vBlinkTask, "BlinkTask", 64, NULL, 1, NULL);
+    xTaskCreate(vPWMTask, "PWMTask", 64, NULL, 1, NULL);
+    xTaskCreate(vNumpadTask, "NumpadTask", 128, NULL, 1, NULL);
+    xTaskCreate(vMorseTask, "Morse", 96, NULL, 1, NULL);
+    xTaskCreate(vUARTMonitor, "UARTMonitor", 96, NULL, 1, NULL);
+
     // Start RTOS Scheduler
     vTaskStartScheduler();
     

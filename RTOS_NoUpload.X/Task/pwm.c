@@ -6,11 +6,10 @@
 void vPWMTask(void *pvParameters) {
     (void)pvParameters;
     // Set PB1 (OC1A) as output
-    DDRB |= (1 << PB1);
+    DDRB |= (1 << PB3);  // Set PB3 (OC2A) as output
 
-    // Timer1 Fast PWM, 8-bit, non-inverting mode
-    TCCR1A = (1 << COM1A1) | (1 << WGM10);  // Fast PWM 8-bit
-    TCCR1B = (1 << WGM12) | (1 << CS11);    // Prescaler = 8
+    TCCR2A = (1 << COM2A1) | (1 << WGM20) | (1 << WGM21); // WGM21 + WGM20 = Mode 3
+    TCCR2B = (1 << CS21);  // Prescaler 8, WGM22 = 0
 
     uint8_t brightness = 0;
     int8_t direction = 5;
@@ -18,14 +17,14 @@ void vPWMTask(void *pvParameters) {
 
     for (;;) {
         if (pwm_brightness == PWM_AUTO) {
-            OCR1A = brightness;
+            OCR2A = brightness;
             brightness += direction;
             if (brightness == 0 || brightness == 255) {
                 direction = -direction;
             }
         } else if (pwm_brightness != last_value) {
             last_value = pwm_brightness;
-            OCR1A = (uint8_t)pwm_brightness;
+            OCR2A = (uint8_t)pwm_brightness;
         }
 
         vTaskDelay(pdMS_TO_TICKS(50));
