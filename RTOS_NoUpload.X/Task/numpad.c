@@ -2,6 +2,9 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "queue.h"
+#include "../globals.h"
+#include <string.h> 
+#include <stdbool.h>
 
 QueueHandle_t morseQueue; // Queue to pass keypresses
 
@@ -64,6 +67,32 @@ void blinkMorse(const char *morse) {
     vTaskDelay(pdMS_TO_TICKS(800)); // Slightly shorter gap after full letter
 }
 
+void handlePWMInput(const char *buffer, uint8_t length) {
+    if (length == 0) {
+        pwm_brightness = PWM_AUTO;
+        uart_transmit_string("PWM set to AUTO\n");
+    } else {
+        uint16_t value = atoi(buffer);
+        if (value <= 255) {
+            pwm_brightness = value;
+
+            // UART confirmation
+            uart_transmit_string("PWM set to ");
+            uart_transmit((value / 100) + '0');
+            uart_transmit(((value / 10) % 10) + '0');
+            uart_transmit((value % 10) + '0');
+            uart_transmit('\n');
+
+            // Blink LED 3x to confirm
+            for (int i = 0; i < 3; i++) {
+                blinkMorse(".");
+            }
+        } else {
+            uart_transmit_string("Invalid PWM value\n");
+        }
+    }
+}
+
 void vNumpadTask(void *pvParameters) {
     (void)pvParameters;
     // Rows: PB4-PB7 (output)
@@ -83,6 +112,10 @@ void vNumpadTask(void *pvParameters) {
         {'7', '8', '9', 'C'},
         {'*', '0', '#', 'D'}
     };
+    
+    char input_buffer[4] = {0};
+    uint8_t buffer_index = 0;
+    bool tracking_pwm_input = false;
     
     while (1) {
         for (uint8_t row = 0; row < 4; row++) {
@@ -116,6 +149,27 @@ void vNumpadTask(void *pvParameters) {
                     
                     // Send key to Morse Task via Queue
                     xQueueSend(morseQueue, &key, portMAX_DELAY);
+                    
+                    // PWM input tracking state machine
+                    if (key == '*') {
+                        // Start or cancel PWM tracking
+                        tracking_pwm_input = true;
+                        buffer_index = 0;
+                        memset(input_buffer, 0, sizeof(input_buffer));
+                    } 
+                    else if (tracking_pwm_input) {
+                        if (key >= '0' && key <= '9' && buffer_index < 3) {
+                            input_buffer[buffer_index++] = key;
+                        } 
+                        else if (key == '#') {
+                            handlePWMInput(input_buffer, buffer_index);
+                            tracking_pwm_input = false;
+                        } 
+                        else {
+                            // Any non-digit key during tracking cancels input
+                            tracking_pwm_input = false;
+                        }
+                    }
                     
                     // Small debounce delay
                     vTaskDelay(pdMS_TO_TICKS(1000));

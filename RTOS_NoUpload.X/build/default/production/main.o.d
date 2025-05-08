@@ -26,7 +26,8 @@ build/default/production/main.o.d build/default/production/main.o: main.c \
  c:\program\ files\microchip\xc8\v2.50\avr\avr\include\util\delay.h \
  c:\program\ files\microchip\xc8\v2.50\avr\avr\include\util\delay_basic.h \
  c:\program\ files\microchip\xc8\v2.50\avr\avr\include\math.h \
- c:\program\ files\microchip\xc8\v2.50\avr\avr\include\avr\interrupt.h
+ c:\program\ files\microchip\xc8\v2.50\avr\avr\include\avr\interrupt.h \
+ globals.h
 
 c:\program\ files\microchip\xc8\v2.50\avr\avr\include\avr\io.h:
 
@@ -93,3 +94,5 @@ c:\program\ files\microchip\xc8\v2.50\avr\avr\include\util\delay_basic.h:
 c:\program\ files\microchip\xc8\v2.50\avr\avr\include\math.h:
 
 c:\program\ files\microchip\xc8\v2.50\avr\avr\include\avr\interrupt.h:
+
+globals.h:

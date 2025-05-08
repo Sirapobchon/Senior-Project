@@ -19,7 +19,7 @@ build/default/production/Task/pwm.o.d build/default/production/Task/pwm.o: \
  FreeRTOS/include/portable.h FreeRTOS/include/deprecated_definitions.h \
  FreeRTOS/include/../portable/GCC/ATMega328/portmacro.h \
  FreeRTOS/include/mpu_wrappers.h FreeRTOS/include/task.h \
- FreeRTOS/include/list.h
+ FreeRTOS/include/list.h Task/..\globals.h
 
 c:\program\ files\microchip\xc8\v2.50\avr\avr\include\avr\io.h:
 
@@ -66,3 +66,5 @@ FreeRTOS/include/mpu_wrappers.h:
 FreeRTOS/include/task.h:
 
 FreeRTOS/include/list.h:
+
+Task/..\globals.h:

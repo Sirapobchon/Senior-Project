@@ -19,7 +19,10 @@ build/default/production/Task/numpad.o.d \
  FreeRTOS/include/portable.h FreeRTOS/include/deprecated_definitions.h \
  FreeRTOS/include/../portable/GCC/ATMega328/portmacro.h \
  FreeRTOS/include/mpu_wrappers.h FreeRTOS/include/task.h \
- FreeRTOS/include/list.h FreeRTOS/include/queue.h FreeRTOS/include/task.h
+ FreeRTOS/include/list.h FreeRTOS/include/queue.h FreeRTOS/include/task.h \
+ Task/../globals.h \
+ c:\program\ files\microchip\xc8\v2.50\avr\avr\include\string.h \
+ c:\program\ files\microchip\xc8\v2.50\avr\lib\gcc\avr\5.4.0\include\stdbool.h
 
 c:\program\ files\microchip\xc8\v2.50\avr\avr\include\avr\io.h:
 
@@ -70,3 +73,9 @@ FreeRTOS/include/list.h:
 FreeRTOS/include/queue.h:
 
 FreeRTOS/include/task.h:
+
+Task/../globals.h:
+
+c:\program\ files\microchip\xc8\v2.50\avr\avr\include\string.h:
+
+c:\program\ files\microchip\xc8\v2.50\avr\lib\gcc\avr\5.4.0\include\stdbool.h:

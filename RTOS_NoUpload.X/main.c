@@ -14,6 +14,9 @@
 #include <stdint.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
+#include "globals.h"
+
+volatile uint16_t pwm_brightness = PWM_AUTO;
 
 extern QueueHandle_t morseQueue;
 
@@ -133,7 +136,7 @@ void uart_transmit_number(uint16_t num) {
 
 void vUARTMonitor(void *pvParameters) {
     (void)pvParameters;
-    uart_transmit_string("\n[UART Monitor Started]\n");
+    uart_transmit_string("UART Monitor Started...\n");
 
     while (1) {
         if (UCSR0A & (1 << RXC0)) { // Check if data received

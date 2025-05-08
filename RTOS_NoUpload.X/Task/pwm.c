@@ -1,6 +1,7 @@
 #include <avr/io.h>
 #include "FreeRTOS.h"
 #include "task.h"
+#include "..\globals.h"
 
 void vPWMTask(void *pvParameters) {
     (void)pvParameters;
@@ -13,13 +14,20 @@ void vPWMTask(void *pvParameters) {
 
     uint8_t brightness = 0;
     int8_t direction = 5;
+    uint16_t last_value = PWM_AUTO + 1;  // Ensure initial mismatch
 
-    while (1) {
-        OCR1A = brightness; // PWM duty
-        brightness += direction;
-        if (brightness == 0 || brightness == 255) {
-            direction = -direction;
+    for (;;) {
+        if (pwm_brightness == PWM_AUTO) {
+            OCR1A = brightness;
+            brightness += direction;
+            if (brightness == 0 || brightness == 255) {
+                direction = -direction;
+            }
+        } else if (pwm_brightness != last_value) {
+            last_value = pwm_brightness;
+            OCR1A = (uint8_t)pwm_brightness;
         }
+
         vTaskDelay(pdMS_TO_TICKS(50));
     }
 }
