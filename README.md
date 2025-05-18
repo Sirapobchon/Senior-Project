@@ -2,13 +2,15 @@
 
 This is my Senior Project focused on embedded systems using the ATMega328P. It implements a lightweight RTOS using FreeRTOS Kernel v11.1.0 with support for task scheduling, multitasking, and real-time I/O interaction. Task upload via UART and EEPROM/Flash-based task storage are available in dedicated branches, but the primary version used for testing and presentation is now in `RTOS_NoUpload`.
 
-# RTOS_NoUpload – Current Testing Build
+## 🧪 Active Development Folder: `RTOS_NoUpload.X`
+This is the primary build used for testing and presentation.
 
-## 📌 Overview
-
-This project is a **custom RTOS for the ATMega328P** based on **FreeRTOS v11.1.0**.
-- Tick timer uses **TIMER1_COMPA_vect**
-- **heap_4.c** is used for dynamic allocation and task buffer management
+### 🔧 RTOS Highlights
+- Based on **FreeRTOS v11.1.0**
+- Tick source: **TIMER1_COMPA_vect**
+- Memory management: **heap_4.c**
+- Predefined tasks for blinking, PWM output, numpad scanning, and Morse code response
+- UART-based logging with optional FTDI monitoring
 
 `RTOS_NoUpload.X` is a FreeRTOS-based firmware that runs predefined tasks:
 * Blink LED on PB2 (1s cycle)
@@ -23,6 +25,8 @@ This project is a **custom RTOS for the ATMega328P** based on **FreeRTOS v11.1.0
 - **Store and load tasks from Flash**, currently test with only EEPROM.
 - Execute tasks dynamically using **FreeRTOS task scheduling**.
 - Communicate with a **Python-based PC tool** for real-time task management.
+
+The `RTOS_NoUpload.X` version does not support uploading tasks files. All tasks are predefined in code. Task upload is available in the RTOS.X + Bootloader.X branches.
 
 ## 📁 Project Structure
 
@@ -63,15 +67,17 @@ This project is a **custom RTOS for the ATMega328P** based on **FreeRTOS v11.1.0
 
 ## ⚙️ Hardware Pinout
 
-| Function       | ATmega328P Pin     | Port/Bit     |
-| -------------- | ------------------ | ------------ |
-| Blink LED      | Digital Pin 2      | PB2          |
-| PWM Output     | Digital Pin 11     | PB3 (OC2A)   |
-| Morse LED      | Digital Pin 8      | PB0          |
-| UART TX        | Digital Pin 1      | PD1          |
-| UART RX        | Digital Pin 0      | PD0          |
-| Numpad Rows    | PB6, PB7, PD5, PD6 | Out          |
-| Numpad Columns | PC0–PC3            | In (pull-up) |
+| Function       | ATmega328P Pin     | Note                        |
+| -------------- | ------------------ | --------------------------- |
+| Blink LED      | PB2                | 1s blink cycle              |
+| PWM Output     | PB3 / OC2A         | Fade effect using Timer2    |
+| Morse LED      | PB0                | Blinks Morse of key press   |
+| UART TX        | PD1                | UART output to FTDI         |
+| UART RX        | PD0                | UART input (for PC tool)    |
+| Numpad Rows    | PB6, PB7, PD5, PD6 | 4x4 row scanning            |
+| Numpad Columns | PC0–PC3            | Read with pull-up enabled   |
+
+Uses internal 8 MHz clock, no external crystal needed.
 
 ## 📎 Tools
 
@@ -132,7 +138,7 @@ avrdude -c usbasp -p m328p -U lfuse:r:-:h -U hfuse:r:-:h -U efuse:r:-:h
      call post_build_noup.bat 
      ```
 
-5. **UART Monitor**
+4. **UART Monitor**
 
    * Baud: `9600`
    * Monitor all system output via FTDI232 or any serial tool
