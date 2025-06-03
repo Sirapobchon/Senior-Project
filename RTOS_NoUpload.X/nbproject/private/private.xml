@@ -3,13 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Sirapob-ASUSTUF/MPLABXProjects/RTOS_NoUpload.X/Task/blink.c</file>
-            <file>file:/C:/Users/Sirapob-ASUSTUF/MPLABXProjects/RTOS_NoUpload.X/Task/pwm.c</file>
-            <file>file:/C:/Users/Sirapob-ASUSTUF/MPLABXProjects/RTOS_NoUpload.X/globals.h</file>
-            <file>file:/C:/Users/Sirapob-ASUSTUF/MPLABXProjects/RTOS_NoUpload.X/Task/numpad.c</file>
-            <file>file:/C:/Users/Sirapob-ASUSTUF/MPLABXProjects/RTOS_NoUpload.X/FreeRTOS/FreeRTOSConfig.h</file>
             <file>file:/C:/Users/Sirapob-ASUSTUF/MPLABXProjects/RTOS_NoUpload.X/main.c</file>
-            <file>file:/C:/Users/Sirapob-ASUSTUF/MPLABXProjects/RTOS_NoUpload.X/FreeRTOS/portable/GCC/ATMega328/port.c</file>
         </group>
     </open-files>
 </project-private>

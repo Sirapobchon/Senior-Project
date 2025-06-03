@@ -299,9 +299,9 @@ int main(void) {
     uart_transmit_hex(boot_count);
     uart_transmit('\n');
     
-    DDRB |= (1 << PB1);// Arduino UNO LED pin
+    DDRB |= (1 << PB2);// Arduino UNO LED pin
     for (int i = 0; i < 5; i++) {
-        PORTB ^= (1 << PB1);
+        PORTB ^= (1 << PB2);
         _delay_ms(200);
     }
     
